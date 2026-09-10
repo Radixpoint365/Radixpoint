@@ -1,0 +1,1344 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f9fc;
+    color: #111827;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   WELCOME
+========================= */
+
+#welcomeScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #f7f9fc;
+    color: #111827;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    animation: welcomeExit 1s ease 2.3s forwards;
+}
+
+.welcome-logo {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 25px;
+
+    background: #ffffff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 55px;
+    font-weight: 900;
+
+    animation: logoPop 1s ease;
+}
+
+#welcomeScreen h1 {
+    margin-top: 20px;
+    font-size: 28px;
+    letter-spacing: 3px;
+}
+
+#welcomeScreen p {
+    opacity: 0.7;
+}
+
+
+@keyframes logoPop {
+
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+@keyframes welcomeExit {
+
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+
+
+
+/* =========================
+   BRAND LOGO
+========================= */
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+    flex: 0 0 auto;
+}
+
+.site-logo {
+    width: 165px;
+    height: 58px;
+    object-fit: contain;
+    object-position: left center;
+    display: block;
+}
+
+.footer-site-logo {
+    width: 185px;
+    height: 70px;
+    object-position: center;
+}
+
+
+.welcome-brand-logo {
+    width: min(420px, 78vw);
+    height: auto;
+    max-height: 62vh;
+    object-fit: contain;
+    display: block;
+    animation: logoPop 1s ease;
+}
+
+.footer-mark {
+    width: 38px;
+    height: 38px;
+}
+
+
+@media (max-width:700px) {
+    .site-logo {
+        width: 145px;
+        height: 52px;
+    }
+
+    .footer-site-logo {
+        width: 165px;
+        height: 64px;
+    }
+    .brand-mark {
+        width: 38px;
+        height: 38px;
+    }
+
+    .welcome-brand-logo {
+        width: min(230px, 70vw);
+    }
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    height: 70px;
+
+    background:
+        rgba(255,255,255,0.95);
+
+    backdrop-filter: blur(15px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.logo-area {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+
+.logo {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a5cff,
+            #00c6ff
+        );
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+    font-weight: 900;
+}
+
+
+#navigation {
+    display: flex;
+    gap: 30px;
+}
+
+
+#navigation a {
+    color: #374151;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+
+#navigation a:hover {
+    color: #6a5cff;
+}
+
+
+.menu-button {
+    display: none;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+
+    min-height: 600px;
+
+    padding: 100px 7%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    background:
+
+        radial-gradient(
+            circle at top,
+            #e8e6ff,
+            transparent 45%
+        ),
+
+        #f7f9fc;
+}
+
+
+.hero-badge {
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 50px;
+
+    padding: 8px 18px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    margin-bottom: 25px;
+}
+
+
+.hero h1 {
+
+    font-size: clamp(45px,8vw,80px);
+
+    line-height: 1.05;
+
+    letter-spacing: -3px;
+}
+
+
+.hero h1 span {
+
+    background:
+        linear-gradient(
+            90deg,
+            #6a5cff,
+            #00a8ff
+        );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+.hero p {
+
+    max-width: 650px;
+
+    margin: 25px auto;
+
+    color: #6b7280;
+
+    font-size: 18px;
+}
+
+
+.hero-button {
+
+    text-decoration: none;
+
+    color: white;
+
+    background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 52%, #06b6d4 100%);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.20);
+
+    padding: 14px 25px;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+
+    transition: 0.3s;
+}
+
+
+.hero-button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.05);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.26);
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+.tools-section,
+.info-section {
+
+    padding: 90px 7%;
+}
+
+
+.section-title {
+
+    text-align: center;
+
+    margin-bottom: 45px;
+}
+
+
+.section-title span {
+
+    color: #6a5cff;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.section-title h2 {
+
+    font-size: 38px;
+
+    margin: 8px 0;
+}
+
+
+.section-title p {
+
+    color: #6b7280;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-area {
+
+    max-width: 700px;
+
+    margin: 0 auto 35px;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+#toolSearch {
+
+    flex: 1;
+
+    padding: 15px 18px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 16px;
+
+    background: white;
+}
+
+
+#toolSearch:focus {
+
+    border-color: #6a5cff;
+}
+
+
+#clearSearch {
+
+    border: none;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    background: #111827;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+#searchMessage {
+
+    text-align: center;
+
+    color: #6b7280;
+}
+
+
+/* =========================
+   TOOLS
+========================= */
+
+.tools-grid {
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 25px;
+}
+
+
+.tool-box {
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 22px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 10px 30px
+        rgba(15,23,42,0.05);
+
+    transition: 0.3s;
+}
+
+
+.tool-box:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(15,23,42,0.09);
+}
+
+
+.tool-icon {
+
+    font-size: 35px;
+
+    margin-bottom: 15px;
+}
+
+
+.tool-box h3 {
+
+    font-size: 23px;
+
+    margin-bottom: 8px;
+}
+
+
+.tool-box p {
+
+    color: #6b7280;
+
+    margin-bottom: 20px;
+}
+
+
+.tool-box input[type="file"] {
+
+    width: 100%;
+
+    margin-bottom: 15px;
+}
+
+
+.tool-box button {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 52%, #06b6d4 100%);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(14, 165, 233, 0.20);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+
+.tool-box button:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 52%, #0891b2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(14, 165, 233, 0.28);
+}
+
+
+.tool-box label {
+
+    display: block;
+
+    margin-bottom: 8px;
+}
+
+
+#quality {
+
+    width: 100%;
+
+    margin-bottom: 15px;
+}
+
+
+.dimension-inputs {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+
+.dimension-inputs input {
+
+    width: 50%;
+
+    padding: 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+}
+
+
+/* =========================
+   RESULTS
+========================= */
+
+.result-box {
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #f1f5f9;
+
+    margin-top: 15px;
+}
+
+
+.result-box img {
+
+    max-width: 100%;
+
+    border-radius: 10px;
+
+    margin: 10px 0;
+}
+
+
+.download-button {
+
+    display: inline-block;
+
+    padding: 10px 15px;
+
+    background: #6a5cff;
+
+    color: white;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   NO RESULTS
+========================= */
+
+#noTools {
+
+    display: none;
+
+    text-align: center;
+
+    padding: 50px;
+}
+
+
+/* =========================
+   PRIVACY
+========================= */
+
+.privacy-note {
+
+    max-width: 900px;
+
+    margin: 50px auto 0;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background: #eef2ff;
+
+    text-align: center;
+}
+
+
+/* =========================
+   ABOUT / CONTACT
+========================= */
+
+.info-card {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(15,23,42,0.05);
+}
+
+
+.info-card p {
+
+    margin-bottom: 18px;
+}
+
+
+.contact-card {
+
+    text-align: center;
+}
+
+
+.contact-card a {
+
+    color: #6a5cff;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+/* =================================================
+   RADIX AI BUTTON
+================================================= */
+
+.chatbot-button {
+
+    position: fixed;
+
+    right: 22px;
+
+    bottom: 22px;
+
+    width: 64px;
+
+    height: 64px;
+
+    border-radius: 20px;
+
+    border: 2px solid #dbeafe;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a5cff,
+            #00c6ff
+        );
+
+    color: white;
+
+    cursor: pointer;
+
+    z-index: 2000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 0 18px rgba(106,92,255,0.55),
+        0 0 35px rgba(0,198,255,0.30);
+
+    transition: 0.3s;
+
+    animation: aiGlow 2s infinite;
+}
+
+
+.ai-button-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.ai-button-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.chatbot-button:hover {
+
+    transform:
+        scale(1.08)
+        rotate(3deg);
+}
+
+
+@keyframes aiGlow {
+
+    0%,100% {
+
+        box-shadow:
+            0 0 18px rgba(106,92,255,0.55),
+            0 0 35px rgba(0,198,255,0.30);
+
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 28px rgba(106,92,255,0.85),
+            0 0 50px rgba(0,198,255,0.55);
+
+    }
+}
+
+
+/* =================================================
+   RADIX AI WINDOW
+================================================= */
+
+#chatbot {
+
+    position: fixed;
+
+    right: 22px;
+
+    bottom: 100px;
+
+    width: 360px;
+
+    max-width: calc(100vw - 24px);
+
+    height: 520px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    z-index: 1999;
+
+    display: none;
+
+    flex-direction: column;
+
+    border: 1px solid #ddd;
+
+    box-shadow:
+        0 25px 70px
+        rgba(15,23,42,0.25);
+}
+
+
+/* AI HEADER */
+
+.chat-header {
+
+    padding: 15px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a5cff,
+            #00a8ff
+        );
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.ai-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.ai-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,0.18);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.4);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    font-weight: 900;
+    overflow: hidden;
+}
+
+.ai-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.chat-header strong {
+
+    display: block;
+
+    font-size: 17px;
+}
+
+
+.chat-header small {
+
+    opacity: 0.85;
+}
+
+
+.chat-header button {
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+
+/* CHAT MESSAGES */
+
+#chatMessages {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 15px;
+
+    background: #f7f9fc;
+}
+
+
+.bot-message,
+.user-message {
+
+    max-width: 88%;
+
+    padding: 11px 13px;
+
+    border-radius: 14px;
+
+    margin-bottom: 10px;
+
+    font-size: 14px;
+}
+
+
+.bot-message {
+
+    background: white;
+
+    color: #374151;
+
+    border: 1px solid #e5e7eb;
+
+    border-bottom-left-radius: 4px;
+}
+
+
+.user-message {
+
+    margin-left: auto;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a5cff,
+            #00a8ff
+        );
+
+    color: white;
+
+    border-bottom-right-radius: 4px;
+}
+
+
+/* QUICK REPLIES */
+
+.quick-replies {
+
+    padding: 8px;
+
+    display: flex;
+
+    gap: 6px;
+
+    overflow-x: auto;
+
+    background: white;
+}
+
+
+.quick-replies button {
+
+    white-space: nowrap;
+
+    border:
+        1px solid
+        #d8d5ff;
+
+    background: #f1f0ff;
+
+    color: #5147b9;
+
+    padding: 7px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+.quick-replies button:hover {
+
+    background: #6a5cff;
+
+    color: white;
+}
+
+
+/* CHAT INPUT */
+
+.chat-input-area {
+
+    display: flex;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    border-top:
+        1px solid
+        #e5e7eb;
+
+    background: white;
+}
+
+
+.chat-input-area input {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border:
+        1px solid
+        #d1d5db;
+
+    border-radius: 10px;
+
+    outline: none;
+}
+
+
+.chat-input-area input:focus {
+
+    border-color: #6a5cff;
+}
+
+
+.chat-input-area button {
+
+    width: 45px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a5cff,
+            #00a8ff
+        );
+
+    color: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    background: #0f172a;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 50px 7%;
+}
+
+
+.footer-logo {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.footer-logo .logo {
+
+    width: 35px;
+
+    height: 35px;
+
+    font-size: 20px;
+}
+
+
+footer p {
+
+    color: #94a3b8;
+
+    margin: 10px 0;
+}
+
+
+.footer-links {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+
+    margin: 20px 0;
+}
+
+
+.footer-links a {
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    font-size: 14px;
+}
+
+
+.footer-links a:hover {
+
+    color: #00c6ff;
+}
+
+
+.copyright {
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:700px) {
+
+    .header {
+
+        padding: 0 5%;
+
+    }
+
+
+    .menu-button {
+
+        display: block;
+
+    }
+
+
+    #navigation {
+
+        display: none;
+
+        position: absolute;
+
+        top: 70px;
+
+        left: 0;
+
+        right: 0;
+
+        background: white;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 18px;
+
+    }
+
+
+    #navigation.active {
+
+        display: flex;
+
+    }
+
+
+    .hero {
+
+        min-height: 520px;
+
+        padding: 70px 5%;
+
+    }
+
+
+    .tools-section,
+    .info-section {
+
+        padding: 65px 5%;
+
+    }
+
+
+    .section-title h2 {
+
+        font-size: 30px;
+
+    }
+
+
+    .tools-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .search-area {
+
+        flex-direction: column;
+
+    }
+
+
+    #clearSearch {
+
+        padding: 12px;
+
+    }
+
+
+    #chatbot {
+
+        right: 10px;
+
+        bottom: 90px;
+
+        width: calc(100vw - 20px);
+
+        height: 500px;
+
+    }
+
+
+    .chatbot-button {
+
+        right: 15px;
+
+        bottom: 15px;
+
+    }
+
+
+    .info-card {
+
+        padding: 25px;
+
+    }
+
+}

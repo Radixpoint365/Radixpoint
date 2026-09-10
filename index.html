@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Radix Point – Smart Online Tools</title>
+
+    <meta
+        name="description"
+        content="Radix Point - Smart online tools for students and everyday users."
+    >
+
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     WELCOME SCREEN
+========================= -->
+
+<div id="welcomeScreen">
+
+    <img class="welcome-brand-logo" src="assets/radix-point-logo-new.png" alt="Radix Point – All-in-One Digital Platform">
+
+    <h1>RADIX POINT</h1>
+
+    <p>Smart Tools. Simple Solutions.</p>
+
+</div>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="logo-area"><img class="site-logo" src="assets/radix-point-logo-new.png" alt="Radix Point Systems"></div>
+
+
+    <button
+        class="menu-button"
+        onclick="toggleMenu()"
+        aria-label="Open menu">
+
+        ☰
+
+    </button>
+
+
+    <nav id="navigation">
+
+        <a href="#home">Home</a>
+
+        <a href="#tools">Tools</a>
+
+        <a href="#about">About</a>
+
+        <a href="#contact">Contact</a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-badge">
+
+        ⚡ Free Online Tools
+
+    </div>
+
+
+    <h1>
+
+        Smart Tools.<br>
+
+        <span>Simple Solutions.</span>
+
+    </h1>
+
+
+    <p>
+
+        Convert, compress, resize and manage your files
+        easily — directly from your browser.
+
+    </p>
+
+
+    <a href="#tools" class="hero-button">
+
+        Explore Tools
+
+    </a>
+
+</section>
+
+
+<!-- =========================
+     TOOLS
+========================= -->
+
+<section class="tools-section" id="tools">
+
+
+    <div class="section-title">
+
+        <span>OUR TOOLS</span>
+
+        <h2>Useful Tools For Everyone</h2>
+
+        <p>
+            Simple tools designed for students and everyday users.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-area">
+
+        <input
+            type="search"
+            id="toolSearch"
+            placeholder="Search tools... e.g. PDF, JPG, compressor"
+            oninput="searchTools()"
+        >
+
+
+        <button
+            id="clearSearch"
+            onclick="clearSearch()">
+
+            Clear
+
+        </button>
+
+    </div>
+
+
+    <p id="searchMessage"></p>
+
+
+    <div class="tools-grid">
+
+
+        <!-- JPG TO PNG -->
+
+        <div
+            class="tool-box"
+            data-tool="JPG PNG image convert converter">
+
+            <div class="tool-icon">🖼️</div>
+
+            <h3>JPG → PNG</h3>
+
+            <p>
+                Convert JPG images into high-quality PNG files.
+            </p>
+
+
+            <input
+                type="file"
+                id="jpgToPngInput"
+                accept="image/jpeg,image/jpg"
+            >
+
+
+            <button onclick="convertJpgToPng()">
+
+                Convert to PNG
+
+            </button>
+
+
+            <div id="jpgToPngResult"></div>
+
+        </div>
+
+
+        <!-- PNG TO JPG -->
+
+        <div
+            class="tool-box"
+            data-tool="PNG JPG image convert converter">
+
+            <div class="tool-icon">📷</div>
+
+            <h3>PNG → JPG</h3>
+
+            <p>
+                Convert PNG images into JPG format quickly.
+            </p>
+
+
+            <input
+                type="file"
+                id="pngToJpgInput"
+                accept="image/png"
+            >
+
+
+            <button onclick="convertPngToJpg()">
+
+                Convert to JPG
+
+            </button>
+
+
+            <div id="pngToJpgResult"></div>
+
+        </div>
+
+
+        <!-- COMPRESSOR -->
+
+        <div
+            class="tool-box"
+            data-tool="image compressor compress jpg png">
+
+            <div class="tool-icon">📦</div>
+
+            <h3>Image Compressor</h3>
+
+            <p>
+                Reduce image file size while keeping good quality.
+            </p>
+
+
+            <input
+                type="file"
+                id="compressInput"
+                accept="image/jpeg,image/jpg,image/png"
+            >
+
+
+            <label>
+
+                Quality:
+                <strong id="qualityText">70%</strong>
+
+            </label>
+
+
+            <input
+                type="range"
+                id="quality"
+                min="10"
+                max="100"
+                value="70"
+                oninput="updateQuality()"
+            >
+
+
+            <button onclick="compressImage()">
+
+                Compress Image
+
+            </button>
+
+
+            <div id="compressResult"></div>
+
+        </div>
+
+
+        <!-- RESIZER -->
+
+        <div
+            class="tool-box"
+            data-tool="image resizer resize jpg png">
+
+            <div class="tool-icon">📐</div>
+
+            <h3>Image Resizer</h3>
+
+            <p>
+                Resize images to your required width and height.
+            </p>
+
+
+            <input
+                type="file"
+                id="resizeInput"
+                accept="image/jpeg,image/jpg,image/png"
+            >
+
+
+            <div class="dimension-inputs">
+
+                <input
+                    type="number"
+                    id="resizeWidth"
+                    placeholder="Width"
+                >
+
+                <input
+                    type="number"
+                    id="resizeHeight"
+                    placeholder="Height"
+                >
+
+            </div>
+
+
+            <button onclick="resizeImage()">
+
+                Resize Image
+
+            </button>
+
+
+            <div id="resizeResult"></div>
+
+        </div>
+
+
+        <!-- IMAGE TO PDF -->
+
+        <div
+            class="tool-box"
+            data-tool="jpg png image pdf converter">
+
+            <div class="tool-icon">📄</div>
+
+            <h3>JPG / PNG → PDF</h3>
+
+            <p>
+                Convert your images into a downloadable PDF.
+            </p>
+
+
+            <input
+                type="file"
+                id="pdfInput"
+                accept="image/jpeg,image/jpg,image/png"
+            >
+
+
+            <button onclick="createPDF()">
+
+                Create PDF
+
+            </button>
+
+
+            <div id="pdfResult"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NO RESULTS -->
+
+    <div id="noTools">
+
+        <h3>🔎 No tools found</h3>
+
+        <p>
+            Try searching for JPG, PNG, PDF, compressor or resize.
+        </p>
+
+    </div>
+
+
+    <!-- PRIVACY NOTE -->
+
+    <div class="privacy-note">
+
+        🔒 <strong>Privacy First</strong>
+
+        <p>
+
+            Your images are processed directly inside your browser.
+            Files are not intentionally uploaded to a Radix Point server
+            for the current tools.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section class="info-section" id="about">
+
+    <div class="section-title">
+
+        <span>ABOUT US</span>
+
+        <h2>What is Radix Point?</h2>
+
+    </div>
+
+
+    <div class="info-card">
+
+        <p>
+
+            <strong>Radix Point</strong> is a simple online platform
+            created to provide useful digital tools in one place.
+
+        </p>
+
+
+        <p>
+
+            Our goal is to help students and everyday users convert,
+            compress, resize and manage their files without complicated
+            software.
+
+        </p>
+
+
+        <p>
+
+            We believe useful technology should be
+            <strong>simple, fast and accessible.</strong>
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section class="info-section" id="contact">
+
+    <div class="section-title">
+
+        <span>CONTACT</span>
+
+        <h2>Get In Touch</h2>
+
+    </div>
+
+
+    <div class="info-card contact-card">
+
+        <p>
+
+            Have a suggestion, question or found a problem?
+
+        </p>
+
+
+        <a href="mailto:radixpoint.co@gmail.com">
+
+            📧 radixpoint.co@gmail.com
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     RADIX AI
+========================= -->
+
+<div id="chatbot">
+
+
+    <!-- AI HEADER -->
+
+    <div class="chat-header">
+
+
+        <div class="ai-title">
+
+
+            <div class="ai-icon">
+
+                <img src="assets/radix-ai-bot.jpg" alt="Radix AI bot">
+
+            </div>
+
+
+            <div>
+
+                <strong>Radix AI</strong>
+
+                <small>
+                    Smart Assistant
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <button
+            onclick="toggleChat()"
+            aria-label="Close Radix AI">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <!-- MESSAGES -->
+
+    <div id="chatMessages">
+
+
+        <div class="bot-message">
+
+            Hello! 👋<br><br>
+
+            I'm <strong>Radix AI</strong> ✦<br><br>
+
+            I can help you understand Radix Point,
+            its tools, formats, features, privacy,
+            and how to use the website.
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK QUESTIONS -->
+
+    <div class="quick-replies">
+
+
+        <button onclick="quickChat('What is Radix Point?')">
+
+            Radix Point
+
+        </button>
+
+
+        <button onclick="quickChat('What tools are available?')">
+
+            Tools
+
+        </button>
+
+
+        <button onclick="quickChat('What formats are supported?')">
+
+            Formats
+
+        </button>
+
+
+        <button onclick="quickChat('Is Radix Point free?')">
+
+            Free?
+
+        </button>
+
+
+        <button onclick="quickChat('Is my image uploaded?')">
+
+            Privacy
+
+        </button>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="chat-input-area">
+
+
+        <input
+            type="text"
+            id="chatInput"
+            placeholder="Ask Radix AI..."
+            onkeydown="handleChatKey(event)"
+        >
+
+
+        <button
+            onclick="sendChat()"
+            aria-label="Send">
+
+            ➤
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- AI BUTTON -->
+
+<button
+    class="chatbot-button"
+    onclick="toggleChat()"
+    aria-label="Open Radix AI">
+
+    <span class="ai-button-icon">
+
+        <img src="assets/radix-ai-bot.jpg" alt="Radix AI bot">
+
+    </span>
+
+</button>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+
+    <div class="footer-logo"><img class="site-logo footer-site-logo" src="assets/radix-point-logo-new.png" alt="Radix Point Systems"></div>
+
+
+    <p>
+
+        Smart Tools. Simple Solutions.
+
+    </p>
+
+
+    <div class="footer-links">
+
+        <a href="privacy.html">Privacy</a>
+
+        <a href="terms.html">Terms</a>
+
+        <a href="disclaimer.html">Disclaimer</a>
+
+        <a href="faq.html">FAQ</a>
+
+        <a href="about.html">About</a>
+
+        <a href="contact.html">Contact</a>
+
+    </div>
+
+
+    <p class="copyright">
+
+        © 2026 Radix Point. All rights reserved.
+
+    </p>
+
+</footer>
+
+
+<!-- PDF LIBRARY -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+
+
+<!-- MAIN JAVASCRIPT -->
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
