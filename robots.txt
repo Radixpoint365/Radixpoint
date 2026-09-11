@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://radixpoint.com/sitemap.xml
+
+Sitemap: https://radixpoint365.github.io/Radixpoint/sitemap.xml
