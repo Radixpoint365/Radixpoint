@@ -414,163 +414,167 @@ function updateQuality() {
 
 /* =====================================================
    IMAGE COMPRESSOR
+   Targets a maximum output size of 15 KB.
 ===================================================== */
 
 function compressImage() {
+    var input = document.getElementById("compressInput");
+    var result = document.getElementById("compressResult");
 
-    var input =
-        document.getElementById("compressInput");
+    if (!input || !result) return;
 
-    var qualityInput =
-        document.getElementById("quality");
-
-    var result =
-        document.getElementById("compressResult");
-
-
-    if (
-        !input ||
-        !qualityInput ||
-        !result
-    ) return;
-
-
-    if (!input.files.length) {
-
+    if (!input.files || !input.files.length) {
         result.innerHTML =
-            '<div class="result-box">' +
-            '⚠️ Please select an image.' +
-            '</div>';
-
+            '<div class="result-box">⚠️ Please select an image.</div>';
         return;
     }
 
+    var file = input.files[0];
+    var TARGET_BYTES = 15 * 1024;
+    var reader = new FileReader();
 
-    var file =
-        input.files[0];
+    reader.onerror = function () {
+        result.innerHTML =
+            '<div class="result-box">⚠️ Could not read this image.</div>';
+    };
 
+    reader.onload = function (event) {
+        var image = new Image();
 
-    var quality =
-        parseInt(
-            qualityInput.value
-        ) / 100;
-
-
-    var reader =
-        new FileReader();
-
-
-    reader.onload =
-        function(event) {
-
-            var image =
-                new Image();
-
-
-            image.onload =
-                function() {
-
-                    var canvas =
-                        document.createElement("canvas");
-
-
-                    canvas.width =
-                        image.width;
-
-                    canvas.height =
-                        image.height;
-
-
-                    var ctx =
-                        canvas.getContext("2d");
-
-
-                    ctx.fillStyle =
-                        "#ffffff";
-
-
-                    ctx.fillRect(
-                        0,
-                        0,
-                        canvas.width,
-                        canvas.height
-                    );
-
-
-                    ctx.drawImage(
-                        image,
-                        0,
-                        0
-                    );
-
-
-                    canvas.toBlob(
-                        function(blob) {
-
-                            if (!blob) {
-
-                                result.innerHTML =
-                                    '<div class="result-box">' +
-                                    '⚠️ Compression failed.' +
-                                    '</div>';
-
-                                return;
-                            }
-
-
-                            var url =
-                                URL.createObjectURL(blob);
-
-
-                            var originalKB =
-                                (
-                                    file.size / 1024
-                                ).toFixed(1);
-
-
-                            var compressedKB =
-                                (
-                                    blob.size / 1024
-                                ).toFixed(1);
-
-
-                            result.innerHTML =
-
-                                '<div class="result-box">' +
-
-                                '<strong>✅ Image compressed!</strong>' +
-
-                                '<p>Original: ' +
-                                originalKB +
-                                ' KB</p>' +
-
-                                '<p>Compressed: ' +
-                                compressedKB +
-                                ' KB</p>' +
-
-                                '<a class="download-button" href="' +
-                                url +
-                                '" download="radix-point-compressed.jpg">' +
-
-                                'Download Image' +
-
-                                '</a>' +
-
-                                '</div>';
-
-                        },
-                        "image/jpeg",
-                        quality
-                    );
-
-                };
-
-
-            image.src =
-                event.target.result;
-
+        image.onerror = function () {
+            result.innerHTML =
+                '<div class="result-box">⚠️ This image could not be opened.</div>';
         };
 
+        image.onload = function () {
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext("2d");
+            var scale = Math.min(1, 1600 / Math.max(image.width, image.height));
+            var finished = false;
+
+            function renderAtScale() {
+                var width = Math.max(1, Math.round(image.width * scale));
+                var height = Math.max(1, Math.round(image.height * scale));
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx = canvas.getContext("2d");
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(image, 0, 0, width, height);
+
+                findQuality(width, height, 0.05, 0.95, 0, null);
+            }
+
+            function findQuality(width, height, low, high, tries, bestBlob) {
+                if (tries >= 8 || high - low < 0.01) {
+                    if (bestBlob && bestBlob.size <= TARGET_BYTES) {
+                        finish(bestBlob, width, height, true);
+                        return;
+                    }
+
+                    canvas.toBlob(function (minimumBlob) {
+                        if (!minimumBlob) {
+                            showError("Compression failed. Please try another image.");
+                            return;
+                        }
+
+                        if (minimumBlob.size <= TARGET_BYTES) {
+                            finish(minimumBlob, width, height, true);
+                        } else if (width > 64 && height > 64) {
+                            scale *= 0.8;
+                            renderAtScale();
+                        } else {
+                            finish(minimumBlob, width, height, false);
+                        }
+                    }, "image/jpeg", 0.05);
+                    return;
+                }
+
+                var quality = (low + high) / 2;
+
+                canvas.toBlob(function (blob) {
+                    if (!blob) {
+                        showError("Compression failed. Please try another image.");
+                        return;
+                    }
+
+                    if (blob.size <= TARGET_BYTES) {
+                        findQuality(
+                            width,
+                            height,
+                            quality,
+                            high,
+                            tries + 1,
+                            blob
+                        );
+                    } else {
+                        findQuality(
+                            width,
+                            height,
+                            low,
+                            quality,
+                            tries + 1,
+                            bestBlob
+                        );
+                    }
+                }, "image/jpeg", quality);
+            }
+
+            function finish(blob, width, height, targetReached) {
+                if (finished) return;
+
+                finished = true;
+
+                var url =
+                    URL.createObjectURL(blob);
+
+                var originalKB =
+                    (file.size / 1024).toFixed(1);
+
+                var compressedKB =
+                    (blob.size / 1024).toFixed(1);
+
+                var status =
+                    targetReached
+                        ? '<strong>✅ Image compressed to 15 KB or less!</strong>'
+                        : '<strong>⚠️ The smallest result for this image is still above 15 KB.</strong>';
+
+                result.innerHTML =
+                    '<div class="result-box">' +
+                    status +
+                    '<p>Original: ' +
+                    originalKB +
+                    ' KB</p>' +
+                    '<p>Compressed: ' +
+                    compressedKB +
+                    ' KB</p>' +
+                    '<p>Output dimensions: ' +
+                    width +
+                    ' × ' +
+                    height +
+                    ' px</p>' +
+                    '<a class="download-button" href="' +
+                    url +
+                    '" download="radix-point-compressed.jpg">' +
+                    'Download Image' +
+                    '</a>' +
+                    '</div>';
+            }
+
+            function showError(message) {
+                result.innerHTML =
+                    '<div class="result-box">⚠️ ' +
+                    message +
+                    '</div>';
+            }
+
+            renderAtScale();
+        };
+
+        image.src =
+            event.target.result;
+    };
 
     reader.readAsDataURL(file);
 }
@@ -745,8 +749,6 @@ function resizeImage() {
 
     reader.readAsDataURL(file);
 }
-
-
 /* =====================================================
    IMAGE → PDF
 ===================================================== */
@@ -1452,9 +1454,7 @@ function getBotReply(question) {
 
         );
     }
-
-
-    /* RESIZER */
+       /* RESIZER */
 
     if (
         q.includes("resize") ||
