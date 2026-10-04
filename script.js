@@ -526,58 +526,408 @@ function compressImage() {
 
                 finished = true;
 
-                var url =
-                    URL.createObjectURL(blob);
+/* =========================================================
+   IMAGE COMPRESSOR
+   User can enter any target size in KB
+   ========================================================= */
 
-                var originalKB =
-                    (file.size / 1024).toFixed(1);
+function ensureCompressTargetInput() {
+    if (document.getElementById("compressTargetSize")) {
+        return;
+    }
 
-                var compressedKB =
-                    (blob.size / 1024).toFixed(1);
+    const result = document.getElementById("compressResult");
 
-                var status =
-                    targetReached
-                        ? '<strong>✅ Image compressed to 15 KB or less!</strong>'
-                        : '<strong>⚠️ The smallest result for this image is still above 15 KB.</strong>';
+    if (!result) {
+        return;
+    }
 
-                result.innerHTML =
-                    '<div class="result-box">' +
-                    status +
-                    '<p>Original: ' +
-                    originalKB +
-                    ' KB</p>' +
-                    '<p>Compressed: ' +
-                    compressedKB +
-                    ' KB</p>' +
-                    '<p>Output dimensions: ' +
-                    width +
-                    ' × ' +
-                    height +
-                    ' px</p>' +
-                    '<a class="download-button" href="' +
-                    url +
-                    '" download="radix-point-compressed.jpg">' +
-                    'Download Image' +
-                    '</a>' +
-                    '</div>';
+    const container = result.parentElement;
+
+    const wrapper = document.createElement("div");
+    wrapper.id = "compressTargetWrapper";
+    wrapper.style.margin = "12px 0";
+
+    const label = document.createElement("label");
+    label.textContent = "Target Size (KB): ";
+    label.style.display = "block";
+    label.style.marginBottom = "6px";
+    label.style.fontWeight = "600";
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.id = "compressTargetSize";
+    input.min = "1";
+    input.max = "10240";
+    input.step = "1";
+    input.value = "50";
+    input.placeholder = "Example: 10, 20, 50, 100";
+    input.style.width = "100%";
+    input.style.boxSizing = "border-box";
+    input.style.padding = "10px";
+    input.style.borderRadius = "8px";
+    input.style.border = "1px solid #ccc";
+    input.style.fontSize = "16px";
+
+    label.appendChild(input);
+    wrapper.appendChild(label);
+
+    /* Put target-size box before the Compress button */
+    const button = container.querySelector(
+        'button[onclick="compressImage()"]'
+    );
+
+    if (button) {
+        container.insertBefore(wrapper, button);
+    } else {
+        container.insertBefore(wrapper, result);
+    }
+}
+
+
+async function compressImage() {
+
+    const input = document.getElementById("compressInput");
+    const result = document.getElementById("compressResult");
+
+    ensureCompressTargetInput();
+
+    const targetInput =
+        document.getElementById("compressTargetSize");
+
+    if (!input || !input.files || !input.files[0]) {
+        if (result) {
+            result.innerHTML =
+                "<p>Please select an image first.</p>";
+        }
+        return;
+    }
+
+    if (!targetInput) {
+        if (result) {
+            result.innerHTML =
+                "<p>Target size field is missing.</p>";
+        }
+        return;
+    }
+
+    const targetKB = parseFloat(targetInput.value);
+
+    if (!Number.isFinite(targetKB) || targetKB <= 0) {
+        if (result) {
+            result.innerHTML =
+                "<p>Please enter a valid target size such as 10, 20, 50 or 100 KB.</p>";
+        }
+        return;
+    }
+
+    if (targetKB > 10240) {
+        if (result) {
+            result.innerHTML =
+                "<p>Maximum target size is 10240 KB (10 MB).</p>";
+        }
+        return;
+    }
+
+    const file = input.files[0];
+    const TARGET_BYTES = targetKB * 1024;
+
+    result.innerHTML =
+        "<p>Compressing image to approximately " +
+        targetKB +
+        " KB...</p>";
+
+    try {
+
+        const image = new Image();
+
+        image.onload = async function () {
+
+            let scale = Math.min(
+                1,
+                2400 / Math.max(image.width, image.height)
+            );
+
+            let bestBlob = null;
+            let bestWidth = 0;
+            let bestHeight = 0;
+
+            /*
+             * Keep reducing dimensions until the requested
+             * target size can be achieved.
+             */
+            for (let scaleTry = 0; scaleTry < 12; scaleTry++) {
+
+                const width = Math.max(
+                    1,
+                    Math.round(image.width * scale)
+                );
+
+                const height = Math.max(
+                    1,
+                    Math.round(image.height * scale)
+                );
+
+                const canvas = document.createElement("canvas");
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext("2d");
+
+                if (!ctx) {
+                    throw new Error("Canvas is not supported.");
+                }
+
+                /* White background for transparent PNG images */
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.drawImage(
+                    image,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                let low = 0.01;
+                let high = 0.98;
+
+                let currentBest = null;
+
+                /*
+                 * Binary search for the highest JPEG quality
+                 * that remains under the requested target.
+                 */
+                for (let attempt = 0; attempt < 12; attempt++) {
+
+                    const quality =
+                        (low + high) / 2;
+
+                    const blob = await new Promise(resolve => {
+
+                        canvas.toBlob(
+                            resolve,
+                            "image/jpeg",
+                            quality
+                        );
+
+                    });
+
+                    if (!blob) {
+                        continue;
+                    }
+
+                    if (blob.size <= TARGET_BYTES) {
+
+                        currentBest = blob;
+
+                        /*
+                         * We can increase quality.
+                         */
+                        low = quality;
+
+                    } else {
+
+                        /*
+                         * File is too large.
+                         */
+                        high = quality;
+                    }
+                }
+
+                /*
+                 * Save the best result found for this dimension.
+                 */
+                if (currentBest) {
+
+                    bestBlob = currentBest;
+                    bestWidth = width;
+                    bestHeight = height;
+
+                    /*
+                     * We successfully reached the requested
+                     * target, so stop reducing dimensions.
+                     */
+                    break;
+                }
+
+                /*
+                 * Target is too small for the current dimensions.
+                 * Reduce dimensions and try again.
+                 */
+                scale *= 0.80;
+
+                if (scale < 0.05) {
+                    break;
+                }
             }
 
-            function showError(message) {
-                result.innerHTML =
-                    '<div class="result-box">⚠️ ' +
-                    message +
-                    '</div>';
+            /*
+             * If no result could reach the target, create the
+             * smallest possible version we can.
+             */
+            if (!bestBlob) {
+
+                const finalScale = Math.max(
+                    0.05,
+                    scale
+                );
+
+                const width = Math.max(
+                    1,
+                    Math.round(image.width * finalScale)
+                );
+
+                const height = Math.max(
+                    1,
+                    Math.round(image.height * finalScale)
+                );
+
+                const canvas =
+                    document.createElement("canvas");
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx =
+                    canvas.getContext("2d");
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                ctx.drawImage(
+                    image,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                bestBlob = await new Promise(resolve => {
+
+                    canvas.toBlob(
+                        resolve,
+                        "image/jpeg",
+                        0.01
+                    );
+
+                });
+
+                bestWidth = width;
+                bestHeight = height;
             }
 
-            renderAtScale();
+            if (!bestBlob) {
+                throw new Error(
+                    "Unable to create compressed image."
+                );
+            }
+
+            const compressedKB =
+                bestBlob.size / 1024;
+
+            const originalKB =
+                file.size / 1024;
+
+            const url =
+                URL.createObjectURL(bestBlob);
+
+            result.innerHTML = `
+                <div style="margin-top:15px;">
+
+                    <p>
+                        <strong>Target:</strong>
+                        ${targetKB.toFixed(2)} KB
+                    </p>
+
+                    <p>
+                        <strong>Original:</strong>
+                        ${originalKB.toFixed(2)} KB
+                    </p>
+
+                    <p>
+                        <strong>Compressed:</strong>
+                        ${compressedKB.toFixed(2)} KB
+                    </p>
+
+                    <p>
+                        <strong>Dimensions:</strong>
+                        ${bestWidth} × ${bestHeight}
+                    </p>
+
+                    ${
+                        compressedKB <= targetKB
+                        ?
+                        `<p style="color:green;">
+                            ✓ Target size achieved
+                        </p>`
+                        :
+                        `<p style="color:#d97706;">
+                            Target could not be reached at
+                            the available dimensions.
+                        </p>`
+                    }
+
+                    <a
+                        href="${url}"
+                        download="compressed-image.jpg"
+                        style="
+                            display:inline-block;
+                            margin-top:8px;
+                            padding:10px 16px;
+                            border-radius:8px;
+                            text-decoration:none;
+                            color:white;
+                            background:linear-gradient(
+                                135deg,
+                                #2563eb,
+                                #06b6d4
+                            );
+                        "
+                    >
+                        Download Compressed Image
+                    </a>
+
+                </div>
+            `;
+        };
+
+        image.onerror = function () {
+
+            result.innerHTML =
+                "<p>Unable to load this image.</p>";
         };
 
         image.src =
-            event.target.result;
-    };
+            URL.createObjectURL(file);
 
-    reader.readAsDataURL(file);
+    } catch (error) {
+
+        console.error(
+            "Image compression error:",
+            error
+        );
+
+        result.innerHTML =
+            "<p>Compression failed. Please try another image.</p>";
+    }
 }
+
+
+/* Create the target-size field when the page loads */
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        ensureCompressTargetInput();
+    }
+);
 
 
 /* =====================================================
