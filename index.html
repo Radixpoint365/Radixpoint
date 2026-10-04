@@ -334,6 +334,50 @@
         </div>
 
 
+
+        <!-- PDF COMPRESSOR -->
+
+        <div
+            class="tool-box"
+            data-tool="pdf compressor compress pdf reduce pdf size shrink pdf">
+
+            <div class="tool-icon">🗜️</div>
+
+            <h3>PDF Compressor</h3>
+
+            <p>
+                Reduce PDF file size directly in your browser.
+                Best for image-heavy PDFs.
+            </p>
+
+            <input
+                type="file"
+                id="pdfCompressInput"
+                accept="application/pdf"
+            >
+
+            <label>
+                Compression:
+                <strong id="pdfCompressionText">Balanced</strong>
+            </label>
+
+            <input
+                type="range"
+                id="pdfCompression"
+                min="1"
+                max="3"
+                value="2"
+                oninput="updatePdfCompression()"
+            >
+
+            <button onclick="compressPDF()">
+                Compress PDF
+            </button>
+
+            <div id="pdfCompressResult"></div>
+
+        </div>
+
         <!-- IMAGE TO PDF -->
 
         <div
@@ -676,10 +720,12 @@
 </footer>
 
 
-<!-- PDF LIBRARY -->
-
+<!-- PDF LIBRARIES -->
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
 </script>
 
 
