@@ -4,29 +4,52 @@
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JMLKTS9GMP"></script>
+
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
+
         gtag('config', 'G-JMLKTS9GMP');
     </script>
 
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Radix Point – Smart Online Tools</title>
+
 
     <meta
         name="description"
         content="Radix Point - Smart online tools for students and everyday users."
     >
 
-    <link rel="icon" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="icon"
+        href="favicon.png"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
+
 <body>
+
 
 <!-- =========================
      WELCOME SCREEN
@@ -40,11 +63,18 @@
         alt="Radix Point – All-in-One Digital Platform"
     >
 
-    <h1>RADIX POINT</h1>
 
-    <p>Smart Tools. Simple Solutions.</p>
+    <h1>
+        RADIX POINT
+    </h1>
+
+
+    <p>
+        Smart Tools. Simple Solutions.
+    </p>
 
 </div>
+
 
 
 <!-- =========================
@@ -52,6 +82,9 @@
 ========================= -->
 
 <header class="header">
+
+
+    <!-- LOGO -->
 
     <div class="logo-area">
 
@@ -64,107 +97,208 @@
     </div>
 
 
+
+    <!-- MOBILE MENU BUTTON -->
+
     <button
         class="menu-button"
         onclick="toggleMenu()"
-        aria-label="Open menu">
+        aria-label="Open menu"
+    >
 
         ☰
 
     </button>
 
 
+
+    <!-- NAVIGATION -->
+
     <nav id="navigation">
 
-        <a href="#home">Home</a>
+        <a href="#home">
+            Home
+        </a>
 
-        <a href="#tools">Tools</a>
 
-        <a href="#about">About</a>
+        <a href="#tools">
+            Tools
+        </a>
 
-        <a href="#contact">Contact</a>
+
+        <a href="#about">
+            About
+        </a>
+
+
+        <a href="#contact">
+            Contact
+        </a>
 
     </nav>
 
 
-    <!-- =========================
-         QUICK LINKS
-    ========================= -->
-
-    <div class="quick-links-container">
-
-        <button
-            class="quick-links-button"
-            onclick="toggleQuickLinks()"
-            aria-label="Open Quick Links">
-
-            🔗 Quick Links
-
-        </button>
+</header>
 
 
-        <div
-            id="quickLinksMenu"
-            class="quick-links-menu">
 
-            <div class="quick-links-title">
+<!-- =========================
+     QUICK LINKS
+========================= -->
 
-                Quick Links
-
-            </div>
+<details class="quick-links">
 
 
-            <a
-                href="https://student.uoc.ac.in/"
-                target="_blank"
-                rel="noopener noreferrer">
+    <summary>
 
-                🎓 How to Apply Calicut University Degree Certificate
+        🔗 Quick Links
 
-            </a>
+    </summary>
 
 
-            <div class="quick-link-instructions">
 
-                <p>
-                    <strong>How to apply:</strong>
-                </p>
+    <div class="quick-links-panel">
 
-                <ol>
 
-                    <li>
-                        Open the
-                        <strong>Calicut University Students Portal</strong>
-                        using the link above.
-                    </li>
+        <div class="quick-links-title">
 
-                    <li>
-                        Select
-                        <strong>Degree Certificate</strong>
-                        (the second option in the portal).
-                    </li>
+            <span>
+                QUICK LINKS
+            </span>
 
-                    <li>
-                        Follow the instructions shown on the portal
-                        and complete your application.
-                    </li>
 
-                </ol>
-
-            </div>
+            <h3>
+                Useful Student Links
+            </h3>
 
         </div>
 
+
+
+        <!-- CALICUT UNIVERSITY -->
+
+        <details class="quick-link-item">
+
+
+            <summary>
+
+                🎓 How to Apply Calicut University
+                Degree Certificate
+
+            </summary>
+
+
+
+            <div class="quick-link-content">
+
+
+                <p>
+
+                    Follow these steps to apply for a
+                    <strong>
+                        Calicut University Degree Certificate
+                    </strong>:
+
+                </p>
+
+
+
+                <ol>
+
+
+                    <li>
+
+                        Open the
+                        <strong>
+                            Calicut University Students Portal
+                        </strong>
+                        using the link below:
+
+                        <br>
+                        <br>
+
+
+                        <a
+                            href="https://student.uoc.ac.in/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+
+                            👉 Open Students Portal
+
+                        </a>
+
+                    </li>
+
+
+
+                    <li>
+
+                        Select
+                        <strong>
+                            Degree Certificate
+                        </strong>.
+
+                        <br>
+
+                        It is the
+                        <strong>
+                            second option
+                        </strong>
+                        in the portal.
+
+                    </li>
+
+
+
+                    <li>
+
+                        Follow the instructions shown
+                        on the portal and complete your
+                        application.
+
+                    </li>
+
+
+                </ol>
+
+
+
+                <div class="quick-link-note">
+
+                    <strong>
+                        Note:
+                    </strong>
+
+                    Make sure you enter your details
+                    correctly before submitting the
+                    application.
+
+                </div>
+
+
+            </div>
+
+
+        </details>
+
+
     </div>
 
-</header>
+
+</details>
+
 
 
 <!-- =========================
      HERO
 ========================= -->
 
-<section class="hero" id="home">
+<section
+    class="hero"
+    id="home"
+>
+
 
     <div class="hero-badge">
 
@@ -173,13 +307,17 @@
     </div>
 
 
+
     <h1>
 
         Smart Tools.<br>
 
-        <span>Simple Solutions.</span>
+        <span>
+            Simple Solutions.
+        </span>
 
     </h1>
+
 
 
     <p>
@@ -190,38 +328,62 @@
     </p>
 
 
-    <a href="#tools" class="hero-button">
+
+    <a
+        href="#tools"
+        class="hero-button"
+    >
 
         Explore Tools
 
     </a>
 
+
 </section>
+
 
 
 <!-- =========================
      TOOLS
 ========================= -->
 
-<section class="tools-section" id="tools">
+<section
+    class="tools-section"
+    id="tools"
+>
 
 
     <div class="section-title">
 
-        <span>OUR TOOLS</span>
 
-        <h2>Useful Tools For Everyone</h2>
+        <span>
+            OUR TOOLS
+        </span>
+
+
+        <h2>
+            Useful Tools For Everyone
+        </h2>
+
 
         <p>
-            Simple tools designed for students and everyday users.
+
+            Simple tools designed for students
+            and everyday users.
+
         </p>
+
 
     </div>
 
 
-    <!-- SEARCH -->
+
+    <!-- =========================
+         SEARCH
+    ========================= -->
 
     <div class="search-area">
+
 
         <input
             type="search"
@@ -233,33 +395,54 @@
 
         <button
             id="clearSearch"
-            onclick="clearSearch()">
+            onclick="clearSearch()"
+        >
 
             Clear
 
         </button>
 
+
     </div>
+
 
 
     <p id="searchMessage"></p>
 
 
+
+    <!-- =========================
+         TOOLS GRID
+    ========================= -->
+
     <div class="tools-grid">
 
 
-        <!-- JPG TO PNG -->
+        <!-- =========================
+             JPG TO PNG
+        ========================= -->
 
         <div
             class="tool-box"
-            data-tool="JPG PNG image convert converter">
+            data-tool="JPG PNG image convert converter"
+        >
 
-            <div class="tool-icon">🖼️</div>
 
-            <h3>JPG → PNG</h3>
+            <div class="tool-icon">
+                🖼️
+            </div>
+
+
+            <h3>
+                JPG → PNG
+            </h3>
+
 
             <p>
-                Convert JPG images into high-quality PNG files.
+
+                Convert JPG images into
+                high-quality PNG files.
+
             </p>
 
 
@@ -270,7 +453,9 @@
             >
 
 
-            <button onclick="convertJpgToPng()">
+            <button
+                onclick="convertJpgToPng()"
+            >
 
                 Convert to PNG
 
@@ -279,21 +464,36 @@
 
             <div id="jpgToPngResult"></div>
 
+
         </div>
 
 
-        <!-- PNG TO JPG -->
+
+        <!-- =========================
+             PNG TO JPG
+        ========================= -->
 
         <div
             class="tool-box"
-            data-tool="PNG JPG image convert converter">
+            data-tool="PNG JPG image convert converter"
+        >
 
-            <div class="tool-icon">📷</div>
 
-            <h3>PNG → JPG</h3>
+            <div class="tool-icon">
+                📷
+            </div>
+
+
+            <h3>
+                PNG → JPG
+            </h3>
+
 
             <p>
-                Convert PNG images into JPG format quickly.
+
+                Convert PNG images into
+                JPG format quickly.
+
             </p>
 
 
@@ -304,7 +504,9 @@
             >
 
 
-            <button onclick="convertPngToJpg()">
+            <button
+                onclick="convertPngToJpg()"
+            >
 
                 Convert to JPG
 
@@ -313,21 +515,36 @@
 
             <div id="pngToJpgResult"></div>
 
+
         </div>
 
 
-        <!-- IMAGE COMPRESSOR -->
+
+        <!-- =========================
+             IMAGE COMPRESSOR
+        ========================= -->
 
         <div
             class="tool-box"
-            data-tool="image compressor compress jpg png">
+            data-tool="image compressor compress jpg png"
+        >
 
-            <div class="tool-icon">📦</div>
 
-            <h3>Image Compressor</h3>
+            <div class="tool-icon">
+                📦
+            </div>
+
+
+            <h3>
+                Image Compressor
+            </h3>
+
 
             <p>
-                Reduce image file size while keeping good quality.
+
+                Reduce image file size while
+                keeping good quality.
+
             </p>
 
 
@@ -341,7 +558,10 @@
             <label>
 
                 Quality:
-                <strong id="qualityText">70%</strong>
+
+                <strong id="qualityText">
+                    70%
+                </strong>
 
             </label>
 
@@ -356,7 +576,9 @@
             >
 
 
-            <button onclick="compressImage()">
+            <button
+                onclick="compressImage()"
+            >
 
                 Compress Image
 
@@ -365,21 +587,36 @@
 
             <div id="compressResult"></div>
 
+
         </div>
 
 
-        <!-- IMAGE RESIZER -->
+
+        <!-- =========================
+             IMAGE RESIZER
+        ========================= -->
 
         <div
             class="tool-box"
-            data-tool="image resizer resize jpg png">
+            data-tool="image resizer resize jpg png"
+        >
 
-            <div class="tool-icon">📐</div>
 
-            <h3>Image Resizer</h3>
+            <div class="tool-icon">
+                📐
+            </div>
+
+
+            <h3>
+                Image Resizer
+            </h3>
+
 
             <p>
-                Resize images to your required width and height.
+
+                Resize images to your required
+                width and height.
+
             </p>
 
 
@@ -392,11 +629,13 @@
 
             <div class="dimension-inputs">
 
+
                 <input
                     type="number"
                     id="resizeWidth"
                     placeholder="Width"
                 >
+
 
                 <input
                     type="number"
@@ -404,10 +643,13 @@
                     placeholder="Height"
                 >
 
+
             </div>
 
 
-            <button onclick="resizeImage()">
+            <button
+                onclick="resizeImage()"
+            >
 
                 Resize Image
 
@@ -416,22 +658,38 @@
 
             <div id="resizeResult"></div>
 
+
         </div>
 
 
-        <!-- PDF COMPRESSOR -->
+
+        <!-- =========================
+             PDF COMPRESSOR
+        ========================= -->
 
         <div
             class="tool-box"
-            data-tool="pdf compressor compress pdf reduce pdf size shrink pdf">
+            data-tool="pdf compressor compress pdf reduce pdf size shrink pdf"
+        >
 
-            <div class="tool-icon">🗜️</div>
 
-            <h3>PDF Compressor</h3>
+            <div class="tool-icon">
+                🗜️
+            </div>
+
+
+            <h3>
+                PDF Compressor
+            </h3>
+
 
             <p>
-                Reduce PDF file size directly in your browser.
+
+                Reduce PDF file size directly
+                in your browser.
+
                 Best for image-heavy PDFs.
+
             </p>
 
 
@@ -445,7 +703,10 @@
             <label>
 
                 Compression:
-                <strong id="pdfCompressionText">Balanced</strong>
+
+                <strong id="pdfCompressionText">
+                    Balanced
+                </strong>
 
             </label>
 
@@ -460,7 +721,9 @@
             >
 
 
-            <button onclick="compressPDF()">
+            <button
+                onclick="compressPDF()"
+            >
 
                 Compress PDF
 
@@ -469,21 +732,36 @@
 
             <div id="pdfCompressResult"></div>
 
+
         </div>
 
 
-        <!-- IMAGE TO PDF -->
+
+        <!-- =========================
+             IMAGE TO PDF
+        ========================= -->
 
         <div
             class="tool-box"
-            data-tool="jpg png image pdf converter">
+            data-tool="jpg png image pdf converter"
+        >
 
-            <div class="tool-icon">📄</div>
 
-            <h3>JPG / PNG → PDF</h3>
+            <div class="tool-icon">
+                📄
+            </div>
+
+
+            <h3>
+                JPG / PNG → PDF
+            </h3>
+
 
             <p>
-                Convert your images into a downloadable PDF.
+
+                Convert your images into
+                a downloadable PDF.
+
             </p>
 
 
@@ -494,7 +772,9 @@
             >
 
 
-            <button onclick="createPDF()">
+            <button
+                onclick="createPDF()"
+            >
 
                 Create PDF
 
@@ -503,122 +783,196 @@
 
             <div id="pdfResult"></div>
 
+
         </div>
+
 
     </div>
 
 
-    <!-- NO RESULTS -->
+
+    <!-- =========================
+         NO RESULTS
+    ========================= -->
 
     <div id="noTools">
 
-        <h3>🔎 No tools found</h3>
+
+        <h3>
+            🔎 No tools found
+        </h3>
+
 
         <p>
-            Try searching for JPG, PNG, PDF, compressor or resize.
+
+            Try searching for JPG, PNG,
+            PDF, compressor or resize.
+
         </p>
+
 
     </div>
 
 
-    <!-- PRIVACY NOTE -->
+
+    <!-- =========================
+         PRIVACY NOTE
+    ========================= -->
 
     <div class="privacy-note">
 
-        🔒 <strong>Privacy First</strong>
+
+        🔒 <strong>
+            Privacy First
+        </strong>
+
 
         <p>
 
-            Your images are processed directly inside your browser.
-            Files are not intentionally uploaded to a Radix Point server
-            for the current tools.
+            Your images are processed directly
+            inside your browser.
+
+            Files are not intentionally uploaded
+            to a Radix Point server for the
+            current tools.
 
         </p>
 
+
     </div>
 
+
 </section>
+
 
 
 <!-- =========================
      ABOUT
 ========================= -->
 
-<section class="info-section" id="about">
+<section
+    class="info-section"
+    id="about"
+>
+
 
     <div class="section-title">
 
-        <span>ABOUT US</span>
 
-        <h2>What is Radix Point?</h2>
+        <span>
+            ABOUT US
+        </span>
+
+
+        <h2>
+            What is Radix Point?
+        </h2>
+
 
     </div>
 
 
+
     <div class="info-card">
 
+
         <p>
 
-            <strong>Radix Point</strong> is a simple online platform
-            created to provide useful digital tools in one place.
+            <strong>
+                Radix Point
+            </strong>
+
+            is a simple online platform
+            created to provide useful digital
+            tools in one place.
 
         </p>
 
 
+
         <p>
 
-            Our goal is to help students and everyday users convert,
-            compress, resize and manage their files without complicated
-            software.
+            Our goal is to help students and
+            everyday users convert, compress,
+            resize and manage their files
+            without complicated software.
 
         </p>
+
 
 
         <p>
 
             We believe useful technology should be
-            <strong>simple, fast and accessible.</strong>
+
+            <strong>
+                simple, fast and accessible.
+            </strong>
 
         </p>
 
+
     </div>
 
+
 </section>
+
 
 
 <!-- =========================
      CONTACT
 ========================= -->
 
-<section class="info-section" id="contact">
+<section
+    class="info-section"
+    id="contact"
+>
+
 
     <div class="section-title">
 
-        <span>CONTACT</span>
 
-        <h2>Get In Touch</h2>
+        <span>
+            CONTACT
+        </span>
+
+
+        <h2>
+            Get In Touch
+        </h2>
+
 
     </div>
 
 
-    <div class="info-card contact-card">
+
+    <div
+        class="info-card contact-card"
+    >
+
 
         <p>
 
-            Have a suggestion, question or found a problem?
+            Have a suggestion, question
+            or found a problem?
 
         </p>
 
 
-        <a href="mailto:radixpoint.co@gmail.com">
+        <a
+            href="mailto:radixpoint.co@gmail.com"
+        >
 
             📧 radixpoint.co@gmail.com
 
         </a>
 
+
     </div>
 
+
 </section>
+
 
 
 <!-- =========================
@@ -632,104 +986,152 @@
 
     <div class="chat-header">
 
+
         <div class="ai-title">
+
 
             <div class="ai-icon">
 
+
                 <img
                     src="assets/radix-ai-bot.jpg"
-                    alt="Radix AI bot">
+                    alt="Radix AI bot"
+                >
+
 
             </div>
 
 
+
             <div>
 
-                <strong>Radix AI</strong>
+
+                <strong>
+                    Radix AI
+                </strong>
+
 
                 <small>
                     Smart Assistant
                 </small>
 
+
             </div>
+
 
         </div>
 
 
+
         <button
             onclick="toggleChat()"
-            aria-label="Close Radix AI">
+            aria-label="Close Radix AI"
+        >
 
             ×
 
         </button>
 
+
     </div>
+
 
 
     <!-- MESSAGES -->
 
     <div id="chatMessages">
 
+
         <div class="bot-message">
 
-            Hello! 👋<br><br>
 
-            I'm <strong>Radix AI</strong> ✦<br><br>
+            Hello! 👋
 
-            I can help you understand Radix Point,
-            its tools, formats, features, privacy,
-            and how to use the website.
+            <br>
+            <br>
+
+
+            I'm
+            <strong>
+                Radix AI
+            </strong>
+            ✦
+
+            <br>
+            <br>
+
+
+            I can help you understand
+            Radix Point, its tools, formats,
+            features, privacy, and how to
+            use the website.
+
 
         </div>
 
+
     </div>
+
 
 
     <!-- QUICK QUESTIONS -->
 
     <div class="quick-replies">
 
-        <button onclick="quickChat('What is Radix Point?')">
+
+        <button
+            onclick="quickChat('What is Radix Point?')"
+        >
 
             Radix Point
 
         </button>
 
 
-        <button onclick="quickChat('What tools are available?')">
+        <button
+            onclick="quickChat('What tools are available?')"
+        >
 
             Tools
 
         </button>
 
 
-        <button onclick="quickChat('What formats are supported?')">
+        <button
+            onclick="quickChat('What formats are supported?')"
+        >
 
             Formats
 
         </button>
 
 
-        <button onclick="quickChat('Is Radix Point free?')">
+        <button
+            onclick="quickChat('Is Radix Point free?')"
+        >
 
             Free?
 
         </button>
 
 
-        <button onclick="quickChat('Is my image uploaded?')">
+        <button
+            onclick="quickChat('Is my image uploaded?')"
+        >
 
             Privacy
 
         </button>
 
+
     </div>
 
 
-    <!-- INPUT -->
+
+    <!-- CHAT INPUT -->
 
     <div class="chat-input-area">
+
 
         <input
             type="text"
@@ -741,33 +1143,46 @@
 
         <button
             onclick="sendChat()"
-            aria-label="Send">
+            aria-label="Send"
+        >
 
             ➤
 
         </button>
 
+
     </div>
+
 
 </div>
 
 
-<!-- AI BUTTON -->
+
+<!-- =========================
+     AI BUTTON
+========================= -->
 
 <button
     class="chatbot-button"
     onclick="toggleChat()"
-    aria-label="Open Radix AI">
+    aria-label="Open Radix AI"
+>
+
 
     <span class="ai-button-icon">
 
+
         <img
             src="assets/radix-ai-bot.jpg"
-            alt="Radix AI bot">
+            alt="Radix AI bot"
+        >
+
 
     </span>
 
+
 </button>
+
 
 
 <!-- =========================
@@ -776,14 +1191,19 @@
 
 <footer>
 
+
     <div class="footer-logo">
+
 
         <img
             class="site-logo footer-site-logo"
             src="assets/radix-point-logo-new.png"
-            alt="Radix Point Systems">
+            alt="Radix Point Systems"
+        >
+
 
     </div>
+
 
 
     <p>
@@ -793,30 +1213,54 @@
     </p>
 
 
+
     <div class="footer-links">
 
-        <a href="privacy.html">Privacy</a>
 
-        <a href="terms.html">Terms</a>
+        <a href="privacy.html">
+            Privacy
+        </a>
 
-        <a href="disclaimer.html">Disclaimer</a>
 
-        <a href="faq.html">FAQ</a>
+        <a href="terms.html">
+            Terms
+        </a>
 
-        <a href="about.html">About</a>
 
-        <a href="contact.html">Contact</a>
+        <a href="disclaimer.html">
+            Disclaimer
+        </a>
+
+
+        <a href="faq.html">
+            FAQ
+        </a>
+
+
+        <a href="about.html">
+            About
+        </a>
+
+
+        <a href="contact.html">
+            Contact
+        </a>
+
 
     </div>
 
 
+
     <p class="copyright">
 
-        © 2026 Radix Point. All rights reserved.
+        © 2026 Radix Point.
+        All rights reserved.
 
     </p>
 
+
 </footer>
+
 
 
 <!-- =========================
@@ -824,12 +1268,14 @@
 ========================= -->
 
 <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-</script>
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+></script>
+
 
 <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
-</script>
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+></script>
+
 
 
 <!-- =========================
@@ -837,46 +1283,6 @@
 ========================= -->
 
 <script src="script.js"></script>
-
-
-<!-- =========================
-     QUICK LINKS JAVASCRIPT
-========================= -->
-
-<script>
-
-function toggleQuickLinks() {
-
-    const menu = document.getElementById("quickLinksMenu");
-
-    if (!menu) return;
-
-    menu.classList.toggle("show");
-
-}
-
-
-/* Close Quick Links when clicking outside */
-
-document.addEventListener("click", function(event) {
-
-    const container =
-        document.querySelector(".quick-links-container");
-
-    const menu =
-        document.getElementById("quickLinksMenu");
-
-    if (!container || !menu) return;
-
-    if (!container.contains(event.target)) {
-
-        menu.classList.remove("show");
-
-    }
-
-});
-
-</script>
 
 
 </body>
