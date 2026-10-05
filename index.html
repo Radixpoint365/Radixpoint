@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMLKTS9GMP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-JMLKTS9GMP');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JMLKTS9GMP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-JMLKTS9GMP');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,6 +23,7 @@
 
     <link rel="icon" href="favicon.png">
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -32,7 +34,11 @@
 
 <div id="welcomeScreen">
 
-    <img class="welcome-brand-logo" src="assets/radix-point-logo-new.png" alt="Radix Point – All-in-One Digital Platform">
+    <img
+        class="welcome-brand-logo"
+        src="assets/radix-point-logo-new.png"
+        alt="Radix Point – All-in-One Digital Platform"
+    >
 
     <h1>RADIX POINT</h1>
 
@@ -47,7 +53,15 @@
 
 <header class="header">
 
-    <div class="logo-area"><img class="site-logo" src="assets/radix-point-logo-new.png" alt="Radix Point Systems"></div>
+    <div class="logo-area">
+
+        <img
+            class="site-logo"
+            src="assets/radix-point-logo-new.png"
+            alt="Radix Point Systems"
+        >
+
+    </div>
 
 
     <button
@@ -71,6 +85,77 @@
         <a href="#contact">Contact</a>
 
     </nav>
+
+
+    <!-- =========================
+         QUICK LINKS
+    ========================= -->
+
+    <div class="quick-links-container">
+
+        <button
+            class="quick-links-button"
+            onclick="toggleQuickLinks()"
+            aria-label="Open Quick Links">
+
+            🔗 Quick Links
+
+        </button>
+
+
+        <div
+            id="quickLinksMenu"
+            class="quick-links-menu">
+
+            <div class="quick-links-title">
+
+                Quick Links
+
+            </div>
+
+
+            <a
+                href="https://student.uoc.ac.in/"
+                target="_blank"
+                rel="noopener noreferrer">
+
+                🎓 How to Apply Calicut University Degree Certificate
+
+            </a>
+
+
+            <div class="quick-link-instructions">
+
+                <p>
+                    <strong>How to apply:</strong>
+                </p>
+
+                <ol>
+
+                    <li>
+                        Open the
+                        <strong>Calicut University Students Portal</strong>
+                        using the link above.
+                    </li>
+
+                    <li>
+                        Select
+                        <strong>Degree Certificate</strong>
+                        (the second option in the portal).
+                    </li>
+
+                    <li>
+                        Follow the instructions shown on the portal
+                        and complete your application.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </header>
 
@@ -231,7 +316,7 @@
         </div>
 
 
-        <!-- COMPRESSOR -->
+        <!-- IMAGE COMPRESSOR -->
 
         <div
             class="tool-box"
@@ -283,7 +368,7 @@
         </div>
 
 
-        <!-- RESIZER -->
+        <!-- IMAGE RESIZER -->
 
         <div
             class="tool-box"
@@ -334,7 +419,6 @@
         </div>
 
 
-
         <!-- PDF COMPRESSOR -->
 
         <div
@@ -350,16 +434,21 @@
                 Best for image-heavy PDFs.
             </p>
 
+
             <input
                 type="file"
                 id="pdfCompressInput"
                 accept="application/pdf"
             >
 
+
             <label>
+
                 Compression:
                 <strong id="pdfCompressionText">Balanced</strong>
+
             </label>
+
 
             <input
                 type="range"
@@ -370,13 +459,18 @@
                 oninput="updatePdfCompression()"
             >
 
+
             <button onclick="compressPDF()">
+
                 Compress PDF
+
             </button>
+
 
             <div id="pdfCompressResult"></div>
 
         </div>
+
 
         <!-- IMAGE TO PDF -->
 
@@ -538,13 +632,13 @@
 
     <div class="chat-header">
 
-
         <div class="ai-title">
-
 
             <div class="ai-icon">
 
-                <img src="assets/radix-ai-bot.jpg" alt="Radix AI bot">
+                <img
+                    src="assets/radix-ai-bot.jpg"
+                    alt="Radix AI bot">
 
             </div>
 
@@ -577,7 +671,6 @@
 
     <div id="chatMessages">
 
-
         <div class="bot-message">
 
             Hello! 👋<br><br>
@@ -596,7 +689,6 @@
     <!-- QUICK QUESTIONS -->
 
     <div class="quick-replies">
-
 
         <button onclick="quickChat('What is Radix Point?')">
 
@@ -639,7 +731,6 @@
 
     <div class="chat-input-area">
 
-
         <input
             type="text"
             id="chatInput"
@@ -670,7 +761,9 @@
 
     <span class="ai-button-icon">
 
-        <img src="assets/radix-ai-bot.jpg" alt="Radix AI bot">
+        <img
+            src="assets/radix-ai-bot.jpg"
+            alt="Radix AI bot">
 
     </span>
 
@@ -683,8 +776,14 @@
 
 <footer>
 
+    <div class="footer-logo">
 
-    <div class="footer-logo"><img class="site-logo footer-site-logo" src="assets/radix-point-logo-new.png" alt="Radix Point Systems"></div>
+        <img
+            class="site-logo footer-site-logo"
+            src="assets/radix-point-logo-new.png"
+            alt="Radix Point Systems">
+
+    </div>
 
 
     <p>
@@ -720,18 +819,64 @@
 </footer>
 
 
-<!-- PDF LIBRARIES -->
+<!-- =========================
+     PDF LIBRARIES
+========================= -->
+
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
 </script>
+
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
 </script>
 
 
-<!-- MAIN JAVASCRIPT -->
+<!-- =========================
+     MAIN JAVASCRIPT
+========================= -->
 
 <script src="script.js"></script>
+
+
+<!-- =========================
+     QUICK LINKS JAVASCRIPT
+========================= -->
+
+<script>
+
+function toggleQuickLinks() {
+
+    const menu = document.getElementById("quickLinksMenu");
+
+    if (!menu) return;
+
+    menu.classList.toggle("show");
+
+}
+
+
+/* Close Quick Links when clicking outside */
+
+document.addEventListener("click", function(event) {
+
+    const container =
+        document.querySelector(".quick-links-container");
+
+    const menu =
+        document.getElementById("quickLinksMenu");
+
+    if (!container || !menu) return;
+
+    if (!container.contains(event.target)) {
+
+        menu.classList.remove("show");
+
+    }
+
+});
+
+</script>
 
 
 </body>
