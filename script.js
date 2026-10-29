@@ -2609,3 +2609,101 @@ document.addEventListener(
 
     }
 );
+
+
+/* =====================================================
+   NEW TOOLS: MERGE PDF, QR, CALCULATORS, SPLIT PDF,
+   PDF TO WORD, TYPING SPEED TEST
+===================================================== */
+function showToolMessage(id, message, isError) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = '<div class="result-box">' + (isError ? '⚠️ ' : '✅ ') + message + '</div>';
+}
+function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+}
+async function mergePDFs() {
+    var input = document.getElementById('mergePdfInput');
+    if (!input || !input.files || input.files.length < 2) return showToolMessage('mergePdfResult', 'Please select at least two PDF files.', true);
+    if (!window.PDFLib) return showToolMessage('mergePdfResult', 'PDF library did not load. Check your internet connection and retry.', true);
+    try {
+        showToolMessage('mergePdfResult', 'Merging ' + input.files.length + ' files…');
+        var merged = await PDFLib.PDFDocument.create();
+        for (var file of Array.from(input.files)) {
+            var doc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+            var pages = await merged.copyPages(doc, doc.getPageIndices()); pages.forEach(function(page){ merged.addPage(page); });
+        }
+        downloadBlob(new Blob([await merged.save()], {type:'application/pdf'}), 'radix-point-merged.pdf');
+        showToolMessage('mergePdfResult', 'PDF files merged and download started.');
+    } catch (e) { showToolMessage('mergePdfResult', 'Could not merge these PDFs. The files may be damaged or password-protected.', true); }
+}
+function generateQRCode() {
+    var text = (document.getElementById('qrText').value || '').trim();
+    var result = document.getElementById('qrResult');
+    if (!text) return showToolMessage('qrResult', 'Enter a website link or text first.', true);
+    if (typeof QRCode === 'undefined') return showToolMessage('qrResult', 'QR library did not load. Check your internet connection.', true);
+    var size = Number(document.getElementById('qrSize').value) || 220;
+    result.innerHTML = '<div id="qrCodeCanvas" style="display:inline-block;background:#fff;padding:12px;border-radius:8px"></div>';
+    new QRCode(document.getElementById('qrCodeCanvas'), {text:text,width:size,height:size,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+    var button = document.createElement('button'); button.textContent = 'Download QR Code'; button.style.marginTop='12px';
+    button.onclick = function(){ var holder=document.getElementById('qrCodeCanvas'); var img=holder.querySelector('img'); var canvas=holder.querySelector('canvas'); var url=img && img.src ? img.src : (canvas ? canvas.toDataURL('image/png') : ''); if(!url)return; var a=document.createElement('a');a.href=url;a.download='radix-point-qr.png';a.click(); };
+    result.appendChild(button);
+}
+function calculatePercentage() {
+    var a = Number(document.getElementById('percentObtained').value), b = Number(document.getElementById('percentTotal').value);
+    if (document.getElementById('percentObtained').value === '' || document.getElementById('percentTotal').value === '' || !Number.isFinite(a) || !Number.isFinite(b) || b <= 0 || a < 0) return showToolMessage('percentageResult','Enter a valid obtained value and a total greater than zero.',true);
+    showToolMessage('percentageResult', 'Percentage: <strong>' + (a / b * 100).toFixed(2) + '%</strong>');
+}
+function calculateCGPA() {
+    var raw = document.getElementById('cgpaValues').value.trim();
+    var vals = raw.split(/[ ,;]+/).filter(Boolean).map(Number);
+    if (!raw || !vals.length || vals.some(function(n){return !Number.isFinite(n) || n < 0 || n > 10;})) return showToolMessage('cgpaResult','Enter valid grade points from 0 to 10, separated by commas.',true);
+    var avg = vals.reduce(function(a,b){return a+b;},0) / vals.length;
+    showToolMessage('cgpaResult','Average CGPA: <strong>' + avg.toFixed(2) + ' / 10</strong> (' + vals.length + ' semester' + (vals.length===1?'':'s') + ').');
+}
+async function splitPDF() {
+    var input=document.getElementById('splitPdfInput'), start=Number(document.getElementById('splitStartPage').value), end=Number(document.getElementById('splitEndPage').value);
+    if (!input.files.length) return showToolMessage('splitPdfResult','Please select a PDF file.',true);
+    if (!window.PDFLib) return showToolMessage('splitPdfResult','PDF library did not load. Check your internet connection.',true);
+    try {
+        var source=await PDFLib.PDFDocument.load(await input.files[0].arrayBuffer()); var count=source.getPageCount();
+        if (!Number.isInteger(start)||!Number.isInteger(end)||start<1||end<start||end>count) return showToolMessage('splitPdfResult','Enter a page range between 1 and ' + count + '.',true);
+        var out=await PDFLib.PDFDocument.create(); var indices=[]; for(var i=start-1;i<end;i++)indices.push(i);
+        var pages=await out.copyPages(source,indices); pages.forEach(function(p){out.addPage(p);});
+        downloadBlob(new Blob([await out.save()],{type:'application/pdf'}),'radix-point-pages-'+start+'-'+end+'.pdf');
+        showToolMessage('splitPdfResult','Extracted pages ' + start + '–' + end + ' of ' + count + '. Download started.');
+    } catch(e){showToolMessage('splitPdfResult','Could not read this PDF. It may be damaged or password-protected.',true);}
+}
+async function convertPDFToWord() {
+    var input=document.getElementById('pdfWordInput');
+    if(!input.files.length)return showToolMessage('pdfWordResult','Please select a PDF file.',true);
+    if(!window.pdfjsLib)return showToolMessage('pdfWordResult','PDF text library did not load. Check your internet connection.',true);
+    try {
+        pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        showToolMessage('pdfWordResult','Extracting text from PDF…');
+        var data=new Uint8Array(await input.files[0].arrayBuffer()); var pdf=await pdfjsLib.getDocument({data:data}).promise; var parts=[];
+        for(var p=1;p<=pdf.numPages;p++){var page=await pdf.getPage(p);var content=await page.getTextContent();var line=content.items.map(function(it){return it.str;}).join(' ');parts.push('<h2>Page '+p+'</h2><p>'+escapeHtml(line).replace(/\s{2,}/g,' ')+'</p>');}
+        var docHtml='<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;line-height:1.5}h2{font-size:14pt;border-bottom:1px solid #ddd}</style></head><body>'+parts.join('<br>')+'</body></html>';
+        downloadBlob(new Blob(['\ufeff',docHtml],{type:'application/msword'}), 'radix-point-converted.doc');
+        showToolMessage('pdfWordResult','Word-compatible document created. Formatting may differ; scanned PDFs need OCR before conversion.');
+    } catch(e){showToolMessage('pdfWordResult','Could not extract text. This PDF may be protected or contain scanned pages only.',true);}
+}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+var typingStartedAt=0, typingTimer=null, typingActive=false;
+function startTypingTest(){
+    if(typingTimer)clearTimeout(typingTimer); var box=document.getElementById('typingInput');box.value='';box.disabled=false;box.focus();
+    var seconds=Number(document.getElementById('typingDuration').value)||60;typingStartedAt=Date.now();typingActive=true;
+    document.getElementById('typingResult').textContent='Time left: '+seconds+' seconds';
+    function tick(){if(!typingActive)return;var left=Math.max(0,seconds-Math.floor((Date.now()-typingStartedAt)/1000));document.getElementById('typingResult').textContent='Time left: '+left+' seconds';if(left<=0){finishTypingTest();return;}typingTimer=setTimeout(tick,250);} tick();
+}
+function updateTypingTest(){if(typingActive)renderTypingStats(false);}
+function renderTypingStats(finished){
+    var typed=document.getElementById('typingInput').value, sample=document.getElementById('typingSample').textContent, elapsed=Math.max(1,(Date.now()-typingStartedAt)/1000);
+    var words=typed.trim()?typed.trim().split(/\s+/).length:0, wpm=Math.round(words*60/elapsed), correct=0;for(var i=0;i<Math.min(typed.length,sample.length);i++)if(typed[i]===sample[i])correct++;
+    var accuracy=typed.length?Math.round(correct/typed.length*100):0;
+    document.getElementById('typingResult').innerHTML=(finished?'Test complete. ':'')+'Speed: <strong>'+wpm+' WPM</strong> · Accuracy: <strong>'+accuracy+'%</strong> · Characters: '+typed.length;
+}
+function finishTypingTest(){if(!typingActive)return;typingActive=false;if(typingTimer)clearTimeout(typingTimer);document.getElementById('typingInput').disabled=true;renderTypingStats(true);}
