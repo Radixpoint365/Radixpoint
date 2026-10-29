@@ -992,7 +992,79 @@ function resizeImage() {
 }
 /* =====================================================
    IMAGE → PDF
+   Supports adding images in multiple selections and removing them.
 ===================================================== */
+
+var pdfSelectedImages = [];
+
+function renderPdfImageList() {
+    var list = document.getElementById("pdfImageList");
+    if (!list) return;
+
+    if (!pdfSelectedImages.length) {
+        list.innerHTML = '<div class="pdf-empty-state">No images added yet. Choose “Add images” to get started.</div>';
+        return;
+    }
+
+    list.innerHTML = pdfSelectedImages.map(function(file, index) {
+        var previewUrl = URL.createObjectURL(file);
+        return '<div class="pdf-image-item">' +
+            '<img class="pdf-image-thumb" src="' + previewUrl + '" alt="Preview of ' + escapePdfHtml(file.name) + '">' +
+            '<div class="pdf-image-details"><span class="pdf-image-number">Image ' + (index + 1) + '</span>' +
+            '<span class="pdf-image-name" title="' + escapePdfHtml(file.name) + '">' + escapePdfHtml(file.name) + '</span>' +
+            '<span class="pdf-image-size">' + formatPdfFileSize(file.size) + '</span></div>' +
+            '<button type="button" class="pdf-remove-image" aria-label="Remove ' + escapePdfHtml(file.name) + '" title="Remove image" onclick="removePdfImage(' + index + ')">×</button>' +
+            '</div>';
+    }).join('');
+}
+
+function escapePdfHtml(value) {
+    return String(value).replace(/[&<>"']/g, function(char) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char];
+    });
+}
+
+function formatPdfFileSize(bytes) {
+    return bytes < 1024 * 1024 ? (bytes / 1024).toFixed(1) + ' KB' : (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+function removePdfImage(index) {
+    pdfSelectedImages.splice(index, 1);
+    renderPdfImageList();
+    var result = document.getElementById("pdfResult");
+    if (result) result.innerHTML = '';
+}
+
+function addPdfImages(fileList) {
+    var result = document.getElementById("pdfResult");
+    var validFiles = Array.from(fileList || []).filter(function(file) {
+        return file && (/^image\/(jpeg|png)$/i.test(file.type) || /\.(jpe?g|png)$/i.test(file.name));
+    });
+    if (validFiles.length < (fileList ? fileList.length : 0) && result) {
+        result.innerHTML = '<div class="result-box">⚠️ Only JPG and PNG images are supported. Unsupported files were skipped.</div>';
+    } else if (result) {
+        result.innerHTML = '';
+    }
+    validFiles.forEach(function(file) {
+        var duplicate = pdfSelectedImages.some(function(existing) {
+            return existing.name === file.name && existing.size === file.size && existing.lastModified === file.lastModified;
+        });
+        if (!duplicate) pdfSelectedImages.push(file);
+    });
+    renderPdfImageList();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var input = document.getElementById("pdfInput");
+    if (input) {
+        input.addEventListener("change", function() {
+            addPdfImages(input.files);
+            // Clear the picker so users can select more images in a later upload.
+            input.value = '';
+        });
+    }
+    renderPdfImageList();
+});
 
 function createPDF() {
     var input = document.getElementById("pdfInput");
@@ -1000,8 +1072,8 @@ function createPDF() {
 
     if (!input || !result) return;
 
-    if (!input.files || !input.files.length) {
-        result.innerHTML = '<div class="result-box">⚠️ Please select one or more JPG or PNG images.</div>';
+    if (!pdfSelectedImages.length) {
+        result.innerHTML = '<div class="result-box">⚠️ Please add one or more JPG or PNG images.</div>';
         return;
     }
 
@@ -1010,7 +1082,7 @@ function createPDF() {
         return;
     }
 
-    var files = Array.from(input.files);
+    var files = pdfSelectedImages.slice();
     var orientationInput = document.querySelector('input[name="pdfOrientation"]:checked');
     var marginInput = document.querySelector('input[name="pdfMargin"]:checked');
     var pageSizeInput = document.getElementById("pdfPageSize");
