@@ -786,45 +786,67 @@
 
 
 
-        <!-- IMAGE TO PDF -->
+        <!-- JPG / PNG TO PDF WITH OPTIONS -->
+        <div class="tool-box" data-tool="jpg png jpeg image pdf converter orientation rotation rotate page size margin merge">
+            <div class="tool-icon">📄</div>
+            <h3>JPG / PNG → PDF</h3>
+            <p>Convert one or multiple images into a PDF with custom page options.</p>
 
-        <div
-            class="tool-box"
-            data-tool="jpg png image pdf converter"
-        >
+            <div class="image-pdf-options">
+                <label class="image-pdf-label">Page orientation</label>
+                <div class="image-pdf-choice-row">
+                    <label class="image-pdf-choice selected" data-choice-group="orientation">
+                        <input type="radio" name="pdfOrientation" value="portrait" checked>
+                        <span class="page-shape portrait-shape" aria-hidden="true"></span>
+                        <span>Portrait</span>
+                    </label>
+                    <label class="image-pdf-choice" data-choice-group="orientation">
+                        <input type="radio" name="pdfOrientation" value="landscape">
+                        <span class="page-shape landscape-shape" aria-hidden="true"></span>
+                        <span>Landscape</span>
+                    </label>
+                </div>
 
-            <div class="tool-icon">
-                📄
+                <label class="image-pdf-label" for="pdfImageRotation">Image rotation</label>
+                <select id="pdfImageRotation" class="image-pdf-select">
+                    <option value="0" selected>0° — No rotation</option>
+                    <option value="90">90° — Rotate right</option>
+                    <option value="180">180° — Upside down</option>
+                    <option value="270">270° — Rotate left</option>
+                </select>
+
+                <label class="image-pdf-label" for="pdfPageSize">Page size</label>
+                <select id="pdfPageSize" class="image-pdf-select">
+                    <option value="fit">Fit (Same page size as image)</option>
+                    <option value="a4" selected>A4 (210 × 297 mm)</option>
+                    <option value="letter">US Letter (215.9 × 279.4 mm)</option>
+                </select>
+
+                <label class="image-pdf-label">Page margins</label>
+                <div class="image-pdf-choice-row margin-choice-row">
+                    <label class="image-pdf-choice selected" data-choice-group="margin">
+                        <input type="radio" name="pdfMargin" value="0" checked>
+                        <span class="margin-icon">▧</span><span>No margin</span>
+                    </label>
+                    <label class="image-pdf-choice" data-choice-group="margin">
+                        <input type="radio" name="pdfMargin" value="10">
+                        <span class="margin-icon">▧</span><span>Small</span>
+                    </label>
+                    <label class="image-pdf-choice" data-choice-group="margin">
+                        <input type="radio" name="pdfMargin" value="20">
+                        <span class="margin-icon">▧</span><span>Big</span>
+                    </label>
+                </div>
+
+                <label class="image-pdf-merge">
+                    <input type="checkbox" id="pdfMergeImages" checked>
+                    <span>Merge all images in one PDF file</span>
+                </label>
             </div>
 
-            <h3>
-                JPG / PNG → PDF
-            </h3>
-
-            <p>
-                Convert your images into
-                a downloadable PDF.
-            </p>
-
-
-            <input
-                type="file"
-                id="pdfInput"
-                accept="image/jpeg,image/jpg,image/png"
-            >
-
-
-            <button
-                onclick="createPDF()"
-            >
-
-                Create PDF
-
-            </button>
-
-
-            <div id="pdfResult"></div>
-
+            <input type="file" id="pdfInput" accept="image/jpeg,image/jpg,image/png" multiple>
+            <button onclick="createPDF()" class="image-pdf-convert-button">Convert to PDF <span aria-hidden="true">➜</span></button>
+            <div id="pdfResult" aria-live="polite"></div>
         </div>
 
 
