@@ -995,173 +995,207 @@ function resizeImage() {
 ===================================================== */
 
 function createPDF() {
-
-    var input =
-        document.getElementById("pdfInput");
-
-    var result =
-        document.getElementById("pdfResult");
-
+    var input = document.getElementById("pdfInput");
+    var result = document.getElementById("pdfResult");
 
     if (!input || !result) return;
 
-
-    if (!input.files.length) {
-
-        result.innerHTML =
-            '<div class="result-box">' +
-            '⚠️ Please select an image.' +
-            '</div>';
-
+    if (!input.files || !input.files.length) {
+        result.innerHTML = '<div class="result-box">⚠️ Please select one or more JPG or PNG images.</div>';
         return;
     }
 
-
-    if (
-        typeof window.jspdf === "undefined" ||
-        typeof window.jspdf.jsPDF === "undefined"
-    ) {
-
-        result.innerHTML =
-            '<div class="result-box">' +
-            '⚠️ PDF library could not load. ' +
-            'Check your internet connection.' +
-            '</div>';
-
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+        result.innerHTML = '<div class="result-box">⚠️ PDF library could not load. Please check your internet connection and try again.</div>';
         return;
     }
 
+    var files = Array.from(input.files);
+    var orientationInput = document.querySelector('input[name="pdfOrientation"]:checked');
+    var marginInput = document.querySelector('input[name="pdfMargin"]:checked');
+    var pageSizeInput = document.getElementById("pdfPageSize");
+    var rotationInput = document.getElementById("pdfImageRotation");
+    var mergeInput = document.getElementById("pdfMergeImages");
 
-    var file =
-        input.files[0];
+    var orientation = orientationInput ? orientationInput.value : "portrait";
+    var margin = marginInput ? Number(marginInput.value) : 0;
+    var pageSize = pageSizeInput ? pageSizeInput.value : "a4";
+    var rotation = rotationInput ? Number(rotationInput.value) : 0;
+    var mergeImages = !mergeInput || mergeInput.checked;
 
-    var reader =
-        new FileReader();
+    result.innerHTML = '<div class="result-box">Preparing ' + files.length + ' image' +
+        (files.length === 1 ? '' : 's') + '…</div>';
 
-
-    reader.onload =
-        function(event) {
-
-            var image =
-                new Image();
-
-
-            image.onload =
-                function() {
-
-                    var jsPDF =
-                        window.jspdf.jsPDF;
-
-
-                    var pdf =
-                        new jsPDF({
-
-                            orientation: "portrait",
-
-                            unit: "mm",
-
-                            format: "a4"
-
+    function loadImage(file) {
+        return new Promise(function(resolve, reject) {
+            var reader = new FileReader();
+            reader.onerror = function() { reject(new Error("Could not read " + file.name)); };
+            reader.onload = function(event) {
+                var img = new Image();
+                img.onerror = function() { reject(new Error("Could not open " + file.name)); };
+                img.onload = function() {
+                    // Rotate the actual image pixels before placing it on the PDF.
+                    // 90° and 270° rotations swap the output width and height.
+                    var angle = ((rotation % 360) + 360) % 360;
+                    var canvas = document.createElement("canvas");
+                    var swapDimensions = angle === 90 || angle === 270;
+                    canvas.width = swapDimensions ? img.height : img.width;
+                    canvas.height = swapDimensions ? img.width : img.height;
+                    var context = canvas.getContext("2d");
+                    context.translate(canvas.width / 2, canvas.height / 2);
+                    context.rotate(angle * Math.PI / 180);
+                    context.drawImage(img, -img.width / 2, -img.height / 2);
+                    var outputType = file.type === "image/png" ? "image/png" : "image/jpeg";
+                    var rotatedData = canvas.toDataURL(outputType, 0.95);
+                    var rotatedImage = new Image();
+                    rotatedImage.onload = function() {
+                        resolve({
+                            image: rotatedImage,
+                            data: rotatedData,
+                            type: file.type === "image/png" ? "PNG" : "JPEG",
+                            name: file.name
                         });
-
-
-                    var pageWidth =
-                        210;
-
-                    var pageHeight =
-                        297;
-
-                    var margin =
-                        10;
-
-
-                    var maxWidth =
-                        pageWidth -
-                        margin * 2;
-
-
-                    var maxHeight =
-                        pageHeight -
-                        margin * 2;
-
-
-                    var ratio =
-                        Math.min(
-                            maxWidth / image.width,
-                            maxHeight / image.height
-                        );
-
-
-                    var imgWidth =
-                        image.width * ratio;
-
-
-                    var imgHeight =
-                        image.height * ratio;
-
-
-                    var x =
-                        (
-                            pageWidth -
-                            imgWidth
-                        ) / 2;
-
-
-                    var y =
-                        (
-                            pageHeight -
-                            imgHeight
-                        ) / 2;
-
-
-                    pdf.addImage(
-                        image,
-                        "JPEG",
-                        x,
-                        y,
-                        imgWidth,
-                        imgHeight
-                    );
-
-
-                    var blob =
-                        pdf.output("blob");
-
-
-                    var url =
-                        URL.createObjectURL(blob);
-
-
-                    result.innerHTML =
-
-                        '<div class="result-box">' +
-
-                        '<strong>✅ PDF created successfully!</strong>' +
-
-                        '<br><br>' +
-
-                        '<a class="download-button" href="' +
-                        url +
-                        '" download="radix-point-image.pdf">' +
-
-                        'Download PDF' +
-
-                        '</a>' +
-
-                        '</div>';
-
+                    };
+                    rotatedImage.onerror = function() { reject(new Error("Could not rotate " + file.name)); };
+                    rotatedImage.src = rotatedData;
                 };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 
+    function getPageDimensions(image) {
+        if (pageSize === "fit") {
+            var width = image.width * 25.4 / 96;
+            var height = image.height * 25.4 / 96;
+            if (orientation === "landscape" && height > width) {
+                var temp = width; width = height; height = temp;
+            } else if (orientation === "portrait" && width > height) {
+                var temp2 = width; width = height; height = temp2;
+            }
+            return [width, height];
+        }
+        var dims = pageSize === "letter" ? [215.9, 279.4] : [210, 297];
+        if (orientation === "landscape") return [dims[1], dims[0]];
+        return dims;
+    }
 
-            image.src =
-                event.target.result;
+    function addImageToPdf(pdf, item, firstPage) {
+        if (!firstPage) pdf.addPage();
+        var dims = getPageDimensions(item.image);
+        var pageWidth = dims[0];
+        var pageHeight = dims[1];
 
-        };
+        // For fixed page sizes, jsPDF creates the page in the requested format.
+        // For Fit, each page is sized to the image's proportions.
+        if (pageSize === "fit") {
+            if (!firstPage) pdf.deletePage(pdf.getNumberOfPages() - 1);
+            if (firstPage) {
+                // Re-create the first page using the exact image-based dimensions.
+                pdf = new window.jspdf.jsPDF({ orientation: "portrait", unit: "mm", format: dims });
+            } else {
+                pdf.addPage(dims, "portrait");
+            }
+            pageWidth = dims[0];
+            pageHeight = dims[1];
+        } else {
+            pageWidth = pdf.internal.pageSize.getWidth();
+            pageHeight = pdf.internal.pageSize.getHeight();
+        }
 
+        var availableWidth = Math.max(1, pageWidth - margin * 2);
+        var availableHeight = Math.max(1, pageHeight - margin * 2);
+        var ratio = Math.min(availableWidth / item.image.width, availableHeight / item.image.height);
+        var width = item.image.width * ratio;
+        var height = item.image.height * ratio;
+        var x = (pageWidth - width) / 2;
+        var y = (pageHeight - height) / 2;
+        pdf.addImage(item.data, item.type, x, y, width, height);
+        return pdf;
+    }
 
-    reader.readAsDataURL(file);
+    Promise.all(files.map(loadImage)).then(function(items) {
+        var jsPDF = window.jspdf.jsPDF;
+        var downloads = [];
+
+        if (mergeImages) {
+            var firstDims = getPageDimensions(items[0].image);
+            var pdf = new jsPDF({
+                orientation: pageSize === "fit" ? "portrait" : orientation,
+                unit: "mm",
+                format: pageSize === "fit" ? firstDims : pageSize
+            });
+
+            items.forEach(function(item, index) {
+                if (index > 0) {
+                    if (pageSize === "fit") {
+                        var dims = getPageDimensions(item.image);
+                        pdf.addPage(dims, "portrait");
+                    } else {
+                        pdf.addPage(pageSize, orientation);
+                    }
+                }
+                var dimsNow = pageSize === "fit" ? getPageDimensions(item.image) : [
+                    pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight()
+                ];
+                var pageWidth = dimsNow[0], pageHeight = dimsNow[1];
+                var availW = Math.max(1, pageWidth - margin * 2);
+                var availH = Math.max(1, pageHeight - margin * 2);
+                var scale = Math.min(availW / item.image.width, availH / item.image.height);
+                var w = item.image.width * scale, h = item.image.height * scale;
+                pdf.addImage(item.data, item.type, (pageWidth - w) / 2, (pageHeight - h) / 2, w, h);
+            });
+
+            var blob = pdf.output("blob");
+            var url = URL.createObjectURL(blob);
+            downloads.push({ url: url, name: "radix-point-images.pdf" });
+        } else {
+            items.forEach(function(item, index) {
+                var dims = getPageDimensions(item.image);
+                var pdf = new jsPDF({
+                    orientation: pageSize === "fit" ? "portrait" : orientation,
+                    unit: "mm",
+                    format: pageSize === "fit" ? dims : pageSize
+                });
+                var pageWidth = pdf.internal.pageSize.getWidth();
+                var pageHeight = pdf.internal.pageSize.getHeight();
+                if (pageSize === "fit") { pageWidth = dims[0]; pageHeight = dims[1]; }
+                var availW = Math.max(1, pageWidth - margin * 2);
+                var availH = Math.max(1, pageHeight - margin * 2);
+                var scale = Math.min(availW / item.image.width, availH / item.image.height);
+                var w = item.image.width * scale, h = item.image.height * scale;
+                pdf.addImage(item.data, item.type, (pageWidth - w) / 2, (pageHeight - h) / 2, w, h);
+                downloads.push({
+                    url: URL.createObjectURL(pdf.output("blob")),
+                    name: "radix-point-" + (index + 1) + ".pdf"
+                });
+            });
+        }
+
+        result.innerHTML = '<div class="result-box"><strong>✅ PDF' +
+            (mergeImages ? ' created' : ' files created') +
+            ' successfully!</strong><p>' + downloads.length +
+            ' download link' + (downloads.length === 1 ? '' : 's') + ' ready.</p>' +
+            downloads.map(function(item) {
+                return '<p><a class="download-button" href="' + item.url +
+                    '" download="' + item.name + '">Download ' + item.name + '</a></p>';
+            }).join('') + '</div>';
+    }).catch(function(error) {
+        result.innerHTML = '<div class="result-box">⚠️ ' +
+            (error.message || 'Could not convert the selected images.') + '</div>';
+    });
 }
 
+/* Highlight selected orientation and margin cards. */
+document.addEventListener("change", function(event) {
+    if (!event.target.matches('input[name="pdfOrientation"], input[name="pdfMargin"]')) return;
+    var group = event.target.name === "pdfOrientation" ? "orientation" : "margin";
+    document.querySelectorAll('[data-choice-group="' + group + '"]').forEach(function(card) {
+        var radio = card.querySelector("input");
+        card.classList.toggle("selected", !!radio && radio.checked);
+    });
+});
 
 
 /* =====================================================
