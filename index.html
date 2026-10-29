@@ -853,6 +853,71 @@
         </div>
 
 
+        <!-- MERGE PDF -->
+        <div class="tool-box" data-tool="merge pdf combine join multiple pdf files">
+            <div class="tool-icon">📚</div><h3>Merge PDF</h3>
+            <p>Combine multiple PDF files into one document in your chosen order.</p>
+            <input type="file" id="mergePdfInput" accept="application/pdf,.pdf" multiple>
+            <div id="mergePdfList" class="result-box" style="display:none"></div>
+            <button onclick="mergePDFs()">Merge PDFs</button><div id="mergePdfResult" aria-live="polite"></div>
+        </div>
+
+        <!-- QR CODE GENERATOR -->
+        <div class="tool-box" data-tool="qr code generator create link url text scan">
+            <div class="tool-icon">▦</div><h3>QR Code Generator</h3>
+            <p>Create a QR code for a website link or any text.</p>
+            <label for="qrText">Text or website URL</label><textarea id="qrText" rows="3" placeholder="https://example.com"></textarea>
+            <label for="qrSize">QR code size</label><select id="qrSize" class="image-pdf-select"><option value="160">Small</option><option value="220" selected>Medium</option><option value="320">Large</option></select>
+            <button onclick="generateQRCode()">Generate QR Code</button><div id="qrResult" aria-live="polite"></div>
+        </div>
+
+        <!-- PERCENTAGE CALCULATOR -->
+        <div class="tool-box" data-tool="percentage calculator marks percent calculate percentage increase decrease">
+            <div class="tool-icon">％</div><h3>Percentage Calculator</h3>
+            <p>Calculate the percentage scored from marks or any two values.</p>
+            <label for="percentObtained">Obtained value</label><input type="number" id="percentObtained" min="0" step="any" placeholder="e.g. 425">
+            <label for="percentTotal">Total value</label><input type="number" id="percentTotal" min="0.000001" step="any" placeholder="e.g. 500">
+            <button onclick="calculatePercentage()">Calculate Percentage</button><div id="percentageResult" aria-live="polite"></div>
+        </div>
+
+        <!-- CGPA CALCULATOR -->
+        <div class="tool-box" data-tool="cgpa calculator gpa grade point semester student university">
+            <div class="tool-icon">🎓</div><h3>CGPA Calculator</h3>
+            <p>Enter your semester grade points separated by commas to calculate your average CGPA.</p>
+            <label for="cgpaValues">Semester grade points (comma-separated)</label><input type="text" id="cgpaValues" placeholder="e.g. 8.2, 7.8, 9.0, 8.5">
+            <p class="tool-help">For a simple average, each semester is weighted equally. If your university requires credit weighting, use its official calculation method.</p>
+            <button onclick="calculateCGPA()">Calculate CGPA</button><div id="cgpaResult" aria-live="polite"></div>
+        </div>
+
+        <!-- SPLIT PDF -->
+        <div class="tool-box" data-tool="split pdf extract pages separate pdf page range">
+            <div class="tool-icon">✂️</div><h3>Split PDF</h3>
+            <p>Extract a page range from a PDF and download it as a new PDF.</p>
+            <input type="file" id="splitPdfInput" accept="application/pdf,.pdf">
+            <div class="dimension-inputs"><input type="number" id="splitStartPage" min="1" value="1" placeholder="First page" aria-label="First page"><input type="number" id="splitEndPage" min="1" value="1" placeholder="Last page" aria-label="Last page"></div>
+            <p class="tool-help">Page numbers start at 1. Choose the same start and end page to extract one page.</p>
+            <button onclick="splitPDF()">Split PDF</button><div id="splitPdfResult" aria-live="polite"></div>
+        </div>
+
+        <!-- PDF TO WORD -->
+        <div class="tool-box" data-tool="pdf to word doc docx convert extract text document">
+            <div class="tool-icon">📝</div><h3>PDF to Word</h3>
+            <p>Extract selectable text from a PDF into a Word-compatible document. Scanned PDFs may need OCR first.</p>
+            <input type="file" id="pdfWordInput" accept="application/pdf,.pdf">
+            <button onclick="convertPDFToWord()">Convert to Word</button><div id="pdfWordResult" aria-live="polite"></div>
+        </div>
+
+        <!-- TYPING SPEED TEST -->
+        <div class="tool-box" data-tool="typing speed test wpm words per minute accuracy keyboard practice">
+            <div class="tool-icon">⌨️</div><h3>Typing Speed Test</h3>
+            <p>Type the sample below to measure your speed and accuracy.</p>
+            <div id="typingSample" class="typing-sample">Practice makes progress. Keep your eyes on the text and type carefully without rushing.</div>
+            <textarea id="typingInput" rows="4" placeholder="Start typing the sample here..." oninput="updateTypingTest()"></textarea>
+            <div class="dimension-inputs"><label for="typingDuration">Test time</label><select id="typingDuration" class="image-pdf-select"><option value="30">30 seconds</option><option value="60" selected>60 seconds</option><option value="120">2 minutes</option></select></div>
+            <div class="dimension-inputs"><button onclick="startTypingTest()" id="typingStartButton">Start / Restart</button><button onclick="finishTypingTest()" id="typingFinishButton">Finish</button></div>
+            <div id="typingResult" aria-live="polite" class="result-box">Press Start / Restart to begin.</div>
+        </div>
+
     </div>
 
 
@@ -1275,6 +1340,8 @@
      MAIN JAVASCRIPT
 ========================= -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="script.js"></script>
 
 
