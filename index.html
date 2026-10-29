@@ -844,7 +844,10 @@
                 </label>
             </div>
 
+            <label for="pdfInput" class="pdf-add-images-button">＋ Add images</label>
             <input type="file" id="pdfInput" accept="image/jpeg,image/jpg,image/png" multiple>
+            <p class="pdf-upload-help">Add images all at once or upload more images one by one. Tap × to remove an image.</p>
+            <div id="pdfImageList" class="pdf-image-list" aria-live="polite"></div>
             <button onclick="createPDF()" class="image-pdf-convert-button">Convert to PDF <span aria-hidden="true">➜</span></button>
             <div id="pdfResult" aria-live="polite"></div>
         </div>
